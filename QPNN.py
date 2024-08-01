@@ -3,23 +3,23 @@ import torch
 
 import torchvision.transforms as transforms
 from sklearn import decomposition
-from PIL import Image 
+
 import pennylane as qml
 from pennylane.operation import Operation, AnyWires
-import matplotlib.pyplot as plt
+
 import pennylane.numpy as np
-import numpy as np
+
 import pandas as pd
 from sklearn.datasets import *
 import wandb
-from sklearn.preprocessing import OneHotEncoder,OrdinalEncoder, LabelEncoder
+
 from sklearn.model_selection import train_test_split
-import pprint
+
 from tqdm import tqdm
 import medmnist
 from medmnist import INFO, Evaluator
-target_dataset="wine"
-dataset_list={"iris": 1,"digits": 2,"wine": 3,"cancer": 4, "iris_linear": 5, "moon": 6,"retinamnist": 7}
+
+
 s=0.05
 init_method=lambda x: torch.nn.init.uniform_(x,a=0.,b=s*np.pi)
 
@@ -54,7 +54,7 @@ def get_dataset(index, split=True, split_percentage=0.33, standardization_mode=1
             y = dataset.target
             n_classes=len(np.unique(y))
         case 2:
-            dataset=load_digits()#TODO: PCA
+            dataset=load_digits()
             X_digits = dataset.data
             y = dataset.target
             
@@ -95,7 +95,7 @@ def get_dataset(index, split=True, split_percentage=0.33, standardization_mode=1
             info = INFO[data_flag]
             task = info['task']
             n_channels = info['n_channels']
-            print(n_channels)
+       
             n_classes = len(info['label'])
             
             DataClass = getattr(medmnist, info['python_class'])
@@ -165,13 +165,9 @@ class ProbsToUnaryLayer(torch.nn.Module):
         self.size_q_in=size_in
 
     def forward(self, input_var):
-       # print("probstounitary")
-        #print(input_var)
-
         filt = [2**i for i in range(self.size_q_in)]
-        #print("filtered: ",input_var[:, filt])
-        #input()
         return input_var[:, filt]*12-6
+        
 class QPNN:
     def __init__(self,structure,X,y,xval=None,yval=None):
         self.X=X
@@ -179,7 +175,6 @@ class QPNN:
         self.xval=xval
         self.yval=yval
         self.architecture=[np.shape(X)[1]]+structure+[int((np.shape(y)[1]))]
-        print(self.architecture)
         self.nqubits=np.max(self.architecture)
         if torch.cuda.is_available():
             self.device="cuda"
@@ -202,12 +197,10 @@ class QPNN:
     def init_model(self,mod_arch=None):
         print("Initializing Model, using device: ",self.device)
         if mod_arch != None:
-            print(mod_arch)
             self.architecture=[self.architecture[0]]+[mod_arch]+[self.architecture[-1]]
         for layer in range(len(self.architecture)-1):
             n_layers = 1
             n_pars = int((2*max(self.architecture[layer],self.architecture[layer+1])-1-min(self.architecture[layer],self.architecture[layer+1]))*(min(self.architecture[layer+1],self.architecture[layer]))/2)
-            print(self.device)
             if self.device == "cuda":
                 dev = qml.device("default.qubit.torch", wires=max(self.architecture[layer],self.architecture[layer+1]),torch_device="cuda:0") #TODO: ADD CUDA
 
@@ -224,10 +217,10 @@ class QPNN:
             self.model_architecture.append(qlayer)
             self.model_architecture.append(ProbsToUnaryLayer(self.architecture[layer+1]))
             self.model_architecture.append(torch.nn.Softmax(dim=1))
-            self.model= torch.nn.Sequential(*self.model_architecture)
-            for index,x in  enumerate(reversed(list(self.model.parameters()))):
-                if index%2==0:
-                    x.requires_grad =False    
+        self.model= torch.nn.Sequential(*self.model_architecture)
+        for index,x in  enumerate(reversed(list(self.model.parameters()))):
+            if index%2==0:
+                x.requires_grad =False    
     
     
         
@@ -309,8 +302,8 @@ class QPNN:
             list(zip(X, y)), batch_size=batch_size, shuffle=True, drop_last=True
         )
         if self.device=="cuda":
-            print("MOVING")
             self.model.to('cuda')
+            
         for epoch in tqdm(range(wandb.config.epochs if wandb_verbose else 10)):
         
             running_loss = 0
@@ -335,7 +328,7 @@ class QPNN:
         
                 running_loss += loss_evaluated
         
-            avg_loss = running_loss #/ batches
+            avg_loss = running_loss / 1 if batches==0 else batches
             if verbose: 
                 print("Average loss over epoch {}: {:.4f}".format(epoch + 1, avg_loss))
             if wandb_verbose:
@@ -348,8 +341,7 @@ class QPNN:
                 predictions_val = torch.argmax(y_pred_val, axis=1).detach().numpy()
                 loss_evaluated_val = loss(y_pred_val, yval)
                 y_val_pos=torch.argmax(yval, axis=1).detach().numpy()
-                print(predictions_val)
-                print(y_val_pos)
+
                 correct_val = [1 if p == p_true else 0 for p, p_true in zip(predictions_val, y_val_pos)]
                 accuracy_val = sum(correct_val) / len(correct_val)
                 if verbose:
