@@ -1,0 +1,39 @@
+2024-11-07 17:49:43,351 INFO    Thread-11 (_run_job):83156 [wandb_setup.py:_flush():79] Current SDK version is 0.18.6
+2024-11-07 17:49:43,351 INFO    Thread-11 (_run_job):83156 [wandb_setup.py:_flush():79] Configure stats pid to 83156
+2024-11-07 17:49:43,351 INFO    Thread-11 (_run_job):83156 [wandb_setup.py:_flush():79] Loading settings from C:\Users\giaco\.config\wandb\settings
+2024-11-07 17:49:43,351 INFO    Thread-11 (_run_job):83156 [wandb_setup.py:_flush():79] Loading settings from C:\Users\giaco\Documents\QPNN\QPNN\wandb\settings
+2024-11-07 17:49:43,351 INFO    Thread-11 (_run_job):83156 [wandb_setup.py:_flush():79] Loading settings from environment variables: {'entity': 'quantum_kets', 'project': 'QPNN_TRAIN_SWEEP_iris', 'root_dir': 'C:\\Users\\giaco\\Documents\\QPNN\\QPNN', 'sweep_id': 'omught4a', 'run_id': 'd7dbgpm2', 'sweep_param_path': 'C:\\Users\\giaco\\Documents\\QPNN\\QPNN\\wandb\\sweep-omught4a\\config-d7dbgpm2.yaml'}
+2024-11-07 17:49:43,352 INFO    Thread-11 (_run_job):83156 [wandb_setup.py:_flush():79] Applying setup settings: {'mode': None, '_disable_service': None}
+2024-11-07 17:49:43,352 INFO    Thread-11 (_run_job):83156 [wandb_setup.py:_flush():79] Inferring run settings from compute environment: {'program': '<python with no main file>'}
+2024-11-07 17:49:43,352 INFO    Thread-11 (_run_job):83156 [wandb_setup.py:_flush():79] Applying login settings: {}
+2024-11-07 17:49:43,352 INFO    Thread-11 (_run_job):83156 [wandb_init.py:_log_setup():533] Logging user logs to C:\Users\giaco\Documents\QPNN\QPNN\wandb\run-20241107_174943-d7dbgpm2\logs\debug.log
+2024-11-07 17:49:43,353 INFO    Thread-11 (_run_job):83156 [wandb_init.py:_log_setup():534] Logging internal logs to C:\Users\giaco\Documents\QPNN\QPNN\wandb\run-20241107_174943-d7dbgpm2\logs\debug-internal.log
+2024-11-07 17:49:43,353 INFO    Thread-11 (_run_job):83156 [wandb_init.py:_jupyter_setup():479] configuring jupyter hooks <wandb.sdk.wandb_init._WandbInit object at 0x000002159C3CF7C0>
+2024-11-07 17:49:43,354 INFO    Thread-11 (_run_job):83156 [wandb_init.py:init():619] calling init triggers
+2024-11-07 17:49:43,354 INFO    Thread-11 (_run_job):83156 [wandb_init.py:init():626] wandb.init called with sweep_config: {'arch_elements': 4, 'epochs': 100, 'learning_rate': 0.047810257858132824, 'optimizer': 'RMSPROP'}
+config: {}
+2024-11-07 17:49:43,354 INFO    Thread-11 (_run_job):83156 [wandb_init.py:init():669] starting backend
+2024-11-07 17:49:43,354 INFO    Thread-11 (_run_job):83156 [wandb_init.py:init():673] sending inform_init request
+2024-11-07 17:49:43,364 INFO    Thread-11 (_run_job):83156 [backend.py:_multiprocessing_setup():104] multiprocessing start_methods=spawn, using: spawn
+2024-11-07 17:49:43,364 INFO    Thread-11 (_run_job):83156 [wandb_init.py:init():686] backend started and connected
+2024-11-07 17:49:43,386 INFO    Thread-11 (_run_job):83156 [wandb_run.py:_config_callback():1389] config_cb None None {'arch_elements': 4, 'epochs': 100, 'learning_rate': 0.047810257858132824, 'optimizer': 'RMSPROP'}
+2024-11-07 17:49:43,387 INFO    Thread-11 (_run_job):83156 [wandb_run.py:_label_probe_notebook():1341] probe notebook
+2024-11-07 17:49:43,388 INFO    Thread-11 (_run_job):83156 [wandb_run.py:_label_probe_notebook():1351] Unable to probe notebook: 'NoneType' object has no attribute 'get'
+2024-11-07 17:49:43,388 INFO    Thread-11 (_run_job):83156 [wandb_init.py:init():781] updated telemetry
+2024-11-07 17:49:43,447 INFO    Thread-11 (_run_job):83156 [wandb_init.py:init():814] communicating run to backend with 90.0 second timeout
+2024-11-07 17:49:43,997 INFO    Thread-11 (_run_job):83156 [wandb_init.py:init():867] starting run threads in backend
+2024-11-07 17:49:44,465 INFO    Thread-11 (_run_job):83156 [wandb_run.py:_console_start():2451] atexit reg
+2024-11-07 17:49:44,466 INFO    Thread-11 (_run_job):83156 [wandb_run.py:_redirect():2299] redirect: wrap_raw
+2024-11-07 17:49:44,466 INFO    Thread-11 (_run_job):83156 [wandb_run.py:_redirect():2364] Wrapping output streams.
+2024-11-07 17:49:44,466 INFO    Thread-11 (_run_job):83156 [wandb_run.py:_redirect():2389] Redirects installed.
+2024-11-07 17:49:44,469 INFO    Thread-11 (_run_job):83156 [wandb_init.py:init():911] run started, returning control to user process
+2024-11-07 17:50:20,497 INFO    Thread-11 (_run_job):83156 [wandb_run.py:_finish():2146] finishing run quantum_kets/QPNN_TRAIN_SWEEP_iris/d7dbgpm2
+2024-11-07 17:50:20,497 INFO    Thread-11 (_run_job):83156 [jupyter.py:save_history():459] not saving jupyter history
+2024-11-07 17:50:20,497 INFO    Thread-11 (_run_job):83156 [jupyter.py:save_ipynb():387] not saving jupyter notebook
+2024-11-07 17:50:20,498 INFO    Thread-11 (_run_job):83156 [wandb_init.py:_jupyter_teardown():461] cleaning up jupyter logic
+2024-11-07 17:50:20,498 INFO    Thread-11 (_run_job):83156 [wandb_run.py:_atexit_cleanup():2414] got exitcode: 0
+2024-11-07 17:50:20,498 INFO    Thread-11 (_run_job):83156 [wandb_run.py:_restore():2396] restore
+2024-11-07 17:50:20,498 INFO    Thread-11 (_run_job):83156 [wandb_run.py:_restore():2402] restore done
+2024-11-07 17:50:30,379 INFO    Thread-11 (_run_job):83156 [wandb_run.py:_footer_history_summary_info():3963] rendering history
+2024-11-07 17:50:30,380 INFO    Thread-11 (_run_job):83156 [wandb_run.py:_footer_history_summary_info():3995] rendering summary
+2024-11-07 17:50:30,395 INFO    Thread-11 (_run_job):83156 [wandb_run.py:_footer_sync_info():3922] logging synced files

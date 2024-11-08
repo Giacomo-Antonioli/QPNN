@@ -1,0 +1,1 @@
+{"loss":1.050978660583496,"accuracy_validation":66,"_step":300,"_wandb":{"runtime":24},"validation_loss":1.0444912910461426,"_timestamp":1.7310198569934225e+09,"_runtime":24.3790735,"accuracy":65,"architecture":[5,4,3]}

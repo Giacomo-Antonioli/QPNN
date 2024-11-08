@@ -1,0 +1,12 @@
+wandb_version: 1
+
+arch_elements:
+  value: 4
+batch_size:
+  value: 42
+epochs:
+  value: 200
+learning_rate:
+  value: 0.32110678204603943
+optimizer:
+  value: ADAMW

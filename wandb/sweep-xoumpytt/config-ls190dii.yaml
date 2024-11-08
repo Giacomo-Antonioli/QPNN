@@ -1,0 +1,12 @@
+wandb_version: 1
+
+arch_elements:
+  value: 4
+batch_size:
+  value: 10
+epochs:
+  value: 10
+learning_rate:
+  value: 0.10566188741640913
+optimizer:
+  value: ADAM

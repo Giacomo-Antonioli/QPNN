@@ -1,0 +1,12 @@
+wandb_version: 1
+
+arch_elements:
+  value: 4
+batch_size:
+  value: 14
+epochs:
+  value: 50
+learning_rate:
+  value: 0.07711353111698938
+optimizer:
+  value: RMSPROP

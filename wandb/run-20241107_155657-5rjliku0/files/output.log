@@ -1,0 +1,99 @@
+Initializing Model, using device:  cpu
+C:\Users\giaco\Documents\QPNN\QPNN\QPNN.py:299: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  y = torch.tensor(self.y, requires_grad=False).float()
+C:\Users\giaco\Documents\QPNN\QPNN\QPNN.py:302: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  yval = torch.tensor(self.yval, requires_grad=False).float()
+batches:  4
+  4%|▎         | 7/200 [00:18<08:39,  2.69s/it]
+Average loss over epoch 1: 4.0000
+Validation Accuracy: 32.0%
+Validation Loss: 1.098791480064392
+Accuracy: 34.0%
+Average loss over epoch 2: 4.0000
+Validation Accuracy: 32.0%
+Validation Loss: 1.098781704902649
+Accuracy: 34.0%
+Average loss over epoch 3: 4.0000
+Validation Accuracy: 32.0%
+Validation Loss: 1.0987720489501953
+Accuracy: 34.0%
+Average loss over epoch 4: 4.0000
+Validation Accuracy: 32.0%
+Validation Loss: 1.0987621545791626
+Accuracy: 34.0%
+Average loss over epoch 5: 4.0000
+Validation Accuracy: 32.0%
+Validation Loss: 1.0987520217895508
+Accuracy: 34.0%
+Average loss over epoch 6: 4.0000
+Validation Accuracy: 32.0%
+Validation Loss: 1.0987420082092285
+Accuracy: 34.0%
+Average loss over epoch 7: 4.0000
+Validation Accuracy: 32.0%
+Validation Loss: 1.0987316370010376
+Accuracy: 34.0%
+Average loss over epoch 8: 4.0000
+Validation Accuracy: 32.0%
+Validation Loss: 1.0987216234207153
+Accuracy: 34.0%
+Average loss over epoch 9: 4.0000
+Validation Accuracy: 32.0%
+Validation Loss: 1.098711371421814
+Accuracy: 34.0%
+Average loss over epoch 10: 4.0000
+Validation Accuracy: 32.0%
+Validation Loss: 1.0987015962600708
+Accuracy: 34.0%
+Average loss over epoch 11: 4.0000
+Validation Accuracy: 32.0%
+Validation Loss: 1.0986920595169067
+Accuracy: 34.0%
+Average loss over epoch 12: 4.0000
+Validation Accuracy: 32.0%
+Validation Loss: 1.0986824035644531
+Accuracy: 34.0%
+Average loss over epoch 13: 4.0000
+Validation Accuracy: 32.0%
+Validation Loss: 1.0986721515655518
+Accuracy: 34.0%
+Average loss over epoch 14: 4.0000
+Validation Accuracy: 32.0%
+Validation Loss: 1.0986615419387817
+Accuracy: 34.0%
+Average loss over epoch 15: 4.0000
+Validation Accuracy: 32.0%
+Validation Loss: 1.0986511707305908
+Accuracy: 34.0%
+Average loss over epoch 16: 4.0000
+Validation Accuracy: 32.0%
+Validation Loss: 1.0986403226852417
+Accuracy: 34.0%
+Average loss over epoch 17: 4.0000
+Validation Accuracy: 32.0%
+Validation Loss: 1.0986297130584717
+Accuracy: 34.0%
+Average loss over epoch 18: 4.0000
+Validation Accuracy: 32.0%
+Validation Loss: 1.0986191034317017
+Accuracy: 34.0%
+Average loss over epoch 19: 4.0000
+Validation Accuracy: 32.0%
+Validation Loss: 1.0986084938049316
+Accuracy: 34.0%
+Average loss over epoch 20: 4.0000
+Validation Accuracy: 32.0%
+Validation Loss: 1.0985981225967407
+Accuracy: 34.0%
+Average loss over epoch 21: 4.0000
+Validation Accuracy: 32.0%
+Validation Loss: 1.098587155342102
+Accuracy: 34.0%
+Average loss over epoch 22: 4.0000
+Validation Accuracy: 32.0%
+Validation Loss: 1.0985764265060425
+Accuracy: 34.0%
+Average loss over epoch 23: 4.0000
+Validation Accuracy: 32.0%
+Validation Loss: 1.0985660552978516
+Accuracy: 34.0%

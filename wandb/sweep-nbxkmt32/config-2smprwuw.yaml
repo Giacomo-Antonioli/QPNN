@@ -1,0 +1,12 @@
+wandb_version: 1
+
+arch_elements:
+  value: 10
+batch_size:
+  value: 34
+epochs:
+  value: 100
+learning_rate:
+  value: 0.3592527852730505
+optimizer:
+  value: SGD

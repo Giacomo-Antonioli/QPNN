@@ -1,0 +1,10 @@
+{"time":"2024-11-07T15:43:21.4252582+01:00","level":"INFO","msg":"using version","core version":"0.18.6"}
+{"time":"2024-11-07T15:43:21.4252582+01:00","level":"INFO","msg":"created symlink","path":"C:\\Users\\giaco\\Documents\\QPNN\\QPNN\\wandb\\run-20241107_154321-ly44uhn5\\logs\\debug-core.log"}
+{"time":"2024-11-07T15:43:21.8017101+01:00","level":"INFO","msg":"created new stream","id":"ly44uhn5"}
+{"time":"2024-11-07T15:43:21.8017101+01:00","level":"INFO","msg":"stream: started","id":"ly44uhn5"}
+{"time":"2024-11-07T15:43:21.8022329+01:00","level":"INFO","msg":"writer: Do: started","stream_id":{"value":"ly44uhn5"}}
+{"time":"2024-11-07T15:43:21.8022329+01:00","level":"INFO","msg":"sender: started","stream_id":"ly44uhn5"}
+{"time":"2024-11-07T15:43:21.8022329+01:00","level":"INFO","msg":"handler: started","stream_id":{"value":"ly44uhn5"}}
+{"time":"2024-11-07T15:43:22.0811915+01:00","level":"INFO","msg":"Starting system monitor"}
+{"time":"2024-11-07T15:49:37.8343615+01:00","level":"ERROR","msg":"HTTP error","status":404,"method":"POST","url":"https://api.wandb.ai/files/quantum_kets/QPNN_TRAIN_SWEEP_digits_minus_one/ly44uhn5/file_stream"}
+{"time":"2024-11-07T15:49:37.8371075+01:00","level":"ERROR+4","msg":"filestream: fatal error: filestream: failed to upload: 404 Not Found path=files/quantum_kets/QPNN_TRAIN_SWEEP_digits_minus_one/ly44uhn5/file_stream: {\"error\":\"run QPNN_TRAIN_SWEEP_digits_minus_one/ly44uhn5 not found while streaming file\"}"}

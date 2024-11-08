@@ -1,0 +1,30 @@
+Initializing Model, using device:  cpu
+C:\Users\giaco\Documents\QPNN\QPNN\QPNN.py:299: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  y = torch.tensor(self.y, requires_grad=False).float()
+C:\Users\giaco\Documents\QPNN\QPNN\QPNN.py:302: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  yval = torch.tensor(self.yval, requires_grad=False).float()
+batches:  38
+  2%|▎         | 5/200 [03:14<2:08:49, 39.64s/it]
+Average loss over epoch 1: 38.0000
+Validation Accuracy: 9.906542056074766%
+Validation Loss: 2.2561752796173096
+Accuracy: 11.715867158671585%
+Average loss over epoch 2: 38.0000
+Validation Accuracy: 11.214953271028037%
+Validation Loss: 2.257678270339966
+Accuracy: 10.977859778597786%
+Average loss over epoch 3: 38.0000
+Validation Accuracy: 11.775700934579438%
+Validation Loss: 2.2441329956054688
+Accuracy: 10.885608856088561%
+Average loss over epoch 4: 38.0000
+Validation Accuracy: 9.906542056074766%
+Validation Loss: 2.272214412689209
+Accuracy: 11.162361623616237%
+Average loss over epoch 5: 38.0000
+Validation Accuracy: 11.214953271028037%
+Validation Loss: 2.2591006755828857
+Accuracy: 10.977859778597786%
+Average loss over epoch 6: 38.0000
+Validation Accuracy: 11.775700934579438%
+Validation Loss: 2.2541444301605225

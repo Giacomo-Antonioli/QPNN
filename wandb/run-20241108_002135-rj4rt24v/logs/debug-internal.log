@@ -1,0 +1,18 @@
+{"time":"2024-11-08T00:21:35.9287627+01:00","level":"INFO","msg":"using version","core version":"0.18.6"}
+{"time":"2024-11-08T00:21:35.9287627+01:00","level":"INFO","msg":"created symlink","path":"C:\\Users\\giaco\\Documents\\QPNN\\QPNN\\wandb\\run-20241108_002135-rj4rt24v\\logs\\debug-core.log"}
+{"time":"2024-11-08T00:21:36.0464193+01:00","level":"INFO","msg":"created new stream","id":"rj4rt24v"}
+{"time":"2024-11-08T00:21:36.0464193+01:00","level":"INFO","msg":"stream: started","id":"rj4rt24v"}
+{"time":"2024-11-08T00:21:36.0464193+01:00","level":"INFO","msg":"sender: started","stream_id":"rj4rt24v"}
+{"time":"2024-11-08T00:21:36.0464193+01:00","level":"INFO","msg":"writer: Do: started","stream_id":{"value":"rj4rt24v"}}
+{"time":"2024-11-08T00:21:36.0464193+01:00","level":"INFO","msg":"handler: started","stream_id":{"value":"rj4rt24v"}}
+{"time":"2024-11-08T00:21:36.3202256+01:00","level":"INFO","msg":"Starting system monitor"}
+{"time":"2024-11-08T00:22:56.9488211+01:00","level":"INFO","msg":"Stopping system monitor"}
+{"time":"2024-11-08T00:22:56.9493282+01:00","level":"INFO","msg":"Stopped system monitor"}
+{"time":"2024-11-08T00:22:57.305455+01:00","level":"ERROR","msg":"sender: sendDefer: failed to build job artifact","error":"CreateFile C:\\Users\\giaco\\Documents\\QPNN\\QPNN\\<python with no main file>: La sintassi del nome del file, della directory o del volume non è corretta."}
+{"time":"2024-11-08T00:22:57.9592931+01:00","level":"INFO","msg":"handler: operation stats","stats":{"operations":[{"desc":"uploading output.log","runtime_seconds":0.4479037,"progress":"154.1KB/154.1KB"}],"total_operations":1}}
+{"time":"2024-11-08T00:22:58.1204364+01:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2024-11-08T00:22:59.4756833+01:00","level":"INFO","msg":"stream: closing","id":"rj4rt24v"}
+{"time":"2024-11-08T00:22:59.4756833+01:00","level":"INFO","msg":"handler: closed","stream_id":{"value":"rj4rt24v"}}
+{"time":"2024-11-08T00:22:59.4756833+01:00","level":"INFO","msg":"writer: Close: closed","stream_id":{"value":"rj4rt24v"}}
+{"time":"2024-11-08T00:22:59.4756833+01:00","level":"INFO","msg":"sender: closed","stream_id":"rj4rt24v"}
+{"time":"2024-11-08T00:22:59.4756833+01:00","level":"INFO","msg":"stream: closed","id":"rj4rt24v"}

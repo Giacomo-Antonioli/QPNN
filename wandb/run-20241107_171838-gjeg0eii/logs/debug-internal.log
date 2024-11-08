@@ -1,0 +1,17 @@
+{"time":"2024-11-07T17:18:38.1850733+01:00","level":"INFO","msg":"using version","core version":"0.18.6"}
+{"time":"2024-11-07T17:18:38.1850733+01:00","level":"INFO","msg":"created symlink","path":"C:\\Users\\giaco\\Documents\\QPNN\\QPNN\\wandb\\run-20241107_171838-gjeg0eii\\logs\\debug-core.log"}
+{"time":"2024-11-07T17:18:38.3102303+01:00","level":"INFO","msg":"created new stream","id":"gjeg0eii"}
+{"time":"2024-11-07T17:18:38.3102303+01:00","level":"INFO","msg":"stream: started","id":"gjeg0eii"}
+{"time":"2024-11-07T17:18:38.3102303+01:00","level":"INFO","msg":"writer: Do: started","stream_id":{"value":"gjeg0eii"}}
+{"time":"2024-11-07T17:18:38.3102303+01:00","level":"INFO","msg":"handler: started","stream_id":{"value":"gjeg0eii"}}
+{"time":"2024-11-07T17:18:38.3102303+01:00","level":"INFO","msg":"sender: started","stream_id":"gjeg0eii"}
+{"time":"2024-11-07T17:18:38.6111529+01:00","level":"INFO","msg":"Starting system monitor"}
+{"time":"2024-11-07T17:18:54.0404943+01:00","level":"INFO","msg":"Stopping system monitor"}
+{"time":"2024-11-07T17:18:54.0410197+01:00","level":"INFO","msg":"Stopped system monitor"}
+{"time":"2024-11-07T17:18:54.7801065+01:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2024-11-07T17:18:54.9712967+01:00","level":"INFO","msg":"handler: operation stats","stats":{}}
+{"time":"2024-11-07T17:18:56.0069094+01:00","level":"INFO","msg":"stream: closing","id":"gjeg0eii"}
+{"time":"2024-11-07T17:18:56.0069094+01:00","level":"INFO","msg":"handler: closed","stream_id":{"value":"gjeg0eii"}}
+{"time":"2024-11-07T17:18:56.0069094+01:00","level":"INFO","msg":"writer: Close: closed","stream_id":{"value":"gjeg0eii"}}
+{"time":"2024-11-07T17:18:56.0069094+01:00","level":"INFO","msg":"sender: closed","stream_id":"gjeg0eii"}
+{"time":"2024-11-07T17:18:56.0069094+01:00","level":"INFO","msg":"stream: closed","id":"gjeg0eii"}

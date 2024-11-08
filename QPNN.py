@@ -16,126 +16,10 @@ import wandb
 from sklearn.model_selection import train_test_split
 
 from tqdm import tqdm
-import medmnist
-from medmnist import INFO, Evaluator
 
 
 s=0.05
 init_method=lambda x: torch.nn.init.uniform_(x,a=0.,b=s*np.pi)
-
-
-
-def stereo_pj(X):
-    n,m=np.shape(X)
-    newX=np.zeros((n,m+1))
-    for rowindex,x in enumerate(X):
-        s=np.sum(pow(x,2))
-        for index in range(m):
-            newX[rowindex,index]=2*x[index]/(s+1)
-        newX[rowindex,m]=(s-1)/(s+1)
-    return newX
-
-
-def get_dataset(index, split=True, split_percentage=0.33, standardization_mode=1):
-    """
-    iris:          Load and return the iris dataset (classification).
-    digits:        Load and return the digits dataset (classification).
-    wine:          Load and return the wine dataset (classification).
-    breast_cancer: Load and return the breast cancer wisconsin dataset (classification).
-    """
-    X=None
-    y=None
-    n_classes=None
-    print("Getting dataset: ",{i for i in dataset_list if dataset_list[i]==index})
-    match index:
-        case 1:
-            dataset=load_iris()
-            X = dataset.data
-            y = dataset.target
-            n_classes=len(np.unique(y))
-        case 2:
-            dataset=load_digits()
-            X_digits = dataset.data
-            y = dataset.target
-            
-            # Initialize PCA and fit the data
-            pca_2 = decomposition.PCA(n_components=4)
-            pca_2.fit(X_digits)
-            
-            # Transforming DIGITS data to new dimensions(with 2 features)
-            X = pca_2.transform(X_digits)
-            n_classes=len(np.unique(y))
-        case 3:
-            dataset=load_wine()
-            X = dataset.data
-            y = dataset.target
-            n_classes=len(np.unique(y))
-        case 4:
-            dataset=load_breast_cancer()
-            X = dataset.data
-            y = dataset.target
-            n_classes=len(np.unique(y))
-        case 5:
-            iris_data = load_iris()
-            iris_df = pd.DataFrame(data=iris_data['data'], columns=iris_data['feature_names'])
-            
-            iris_df['Iris type'] = iris_data['target']
-            iris_df = iris_df[iris_df["Iris type"] != 2]
-            iris = iris_df.to_numpy()
-            
-            X = iris[:, :4]  # we only take the first two features.
-            y = np.ndarray.tolist(iris[:, 4].astype(int))
-            n_classes=len(np.unique(y))
-        case 6:
-            X, y = make_moons(n_samples=200, noise=0.1)
-            n_classes=len(np.unique(y))
-        case 7:
-            data_flag = 'retinamnist'
-            download = True
-            info = INFO[data_flag]
-            task = info['task']
-            n_channels = info['n_channels']
-       
-            n_classes = len(info['label'])
-            
-            DataClass = getattr(medmnist, info['python_class'])
-            data_transform = transforms.Compose([transforms.ToTensor()])
-            train_dataset = DataClass(split='train', download=download,as_rgb=True)
-            elements=[]
-            targets=[]
-            for index,x in enumerate(train_dataset):
-                elements.append(np.asarray(x[0].convert('L')).reshape(-1)/255)
-                targets.append(x[1][0])
-            pca_2 = decomposition.PCA(n_components=4)
-
-            pca_2.fit(elements)
-            
-            # Transforming DIGITS data to new dimensions(with 2 features)
-            X = pca_2.transform(elements)
-            y=targets
-            n_classes=len(np.unique(targets))
-        case _:
-            raise Exception("Sorry, the dataset does not exist")
-
-
-    match standardization_mode:
-        case 1:
-            X_mean, X_std=np.mean(X,axis=0), np.std(X,axis=0,ddof=1)
-            
-            X=(X-X_mean)/X_std
-            X=np.hstack((X,2.0*np.ones(X.shape[0])[:,None]))
-            X=np.array([np.clip(row/np.sqrt(np.sum(row**2)),-1,1) for row in X])
-        case 2:
-            X=stereo_pj(X)
-
-    y_hot=torch.zeros((len(y),n_classes),requires_grad=False)
-    for index,element in enumerate(y):
-        y_hot[index][element]=1
-
-    if split:
-        return train_test_split(X, y_hot, test_size=split_percentage, random_state=42)
-    else:
-        return X, y_hot
 
 class RBSGate(Operation):
     num_wires = 2  
@@ -165,7 +49,10 @@ class ProbsToUnaryLayer(torch.nn.Module):
         self.size_q_in=size_in
 
     def forward(self, input_var):
+        #print(input_var)
         filt = [2**i for i in range(self.size_q_in)]
+        #print(filt)
+        #print(input_var[:, filt])
         return input_var[:, filt]*12-6
         
 class QPNN:
@@ -189,13 +76,9 @@ class QPNN:
         self.model=None
         
         
-        
-        
-        
-
-    
     def init_model(self,mod_arch=None):
         print("Initializing Model, using device: ",self.device)
+       
         if mod_arch != None:
             self.architecture=[self.architecture[0]]+[mod_arch]+[self.architecture[-1]]
         for layer in range(len(self.architecture)-1):
@@ -216,11 +99,18 @@ class QPNN:
             self.qlayers.append(qlayer)
             self.model_architecture.append(qlayer)
             self.model_architecture.append(ProbsToUnaryLayer(self.architecture[layer+1]))
+            print("Layer[",layer,"]: arch:",self.architecture[layer] ," pars: ", n_pars)
+            #if layer!=len(self.architecture)-2:
+                        
             self.model_architecture.append(torch.nn.Softmax(dim=1))
+            print(". Added probsToUnitary. Added Softmax ")
         self.model= torch.nn.Sequential(*self.model_architecture)
-        for index,x in  enumerate(reversed(list(self.model.parameters()))):
-            if index%2==0:
-                x.requires_grad =False    
+        print("Architecture: ")
+        print(self.architecture)
+        #input()
+       # for index,x in  enumerate(reversed(list(self.model.parameters()))):
+        #    if index%2==0:
+        #        x.requires_grad =False    
     
     
         
@@ -231,12 +121,16 @@ class QPNN:
         max_q=np.max(shape)
         
         q_base=max_q-shape[0]
+        #print("shape:", shape)
+        #print("qbase: ",q_base)
+        #print(weights)
         qml.PauliX(wires=q_base)
         prd_fact=1.0
         for qi_idx, qi in enumerate(range(max_q-shape[0],max_q-1)):
 
-            theta_i=torch.arccos((inputs[...,qi_idx])/prd_fact)
-            prd_fact=prd_fact*torch.sin(theta_i)
+            theta_i=2*torch.arccos((inputs[...,qi_idx])/prd_fact)
+            #prd_fact=prd_fact*torch.sin(theta_i)
+            #print(theta_i)
             RBSGate(theta_i,wires=[qi,qi+1],id=f"$\\alpha1_{{{{{qi}}}}}$")
 
         ctr=0
@@ -275,7 +169,7 @@ class QPNN:
                 case "RMSPROP":
                      opt = torch.optim.RMSprop(self.model.parameters(), lr=wandb.config.learning_rate)
         else:
-            opt = torch.optim.SGD(self.model.parameters(), lr=0.1)
+            opt = torch.optim.SGD(self.model.parameters(), lr=0.01)
 
         loss = torch.nn.CrossEntropyLoss().to("cuda")
         
@@ -294,21 +188,22 @@ class QPNN:
                 yval.to("cuda")
 
             
-        batch_size = wandb.config.batch_size if wandb_verbose else 50
+        batch_size =1 #wandb.config.batch_size if wandb_verbose else 50
         batches = len(y) // batch_size
         print("batches: ",batches)
 
         data_loader = torch.utils.data.DataLoader(
-            list(zip(X, y)), batch_size=batch_size, shuffle=True, drop_last=True
-        )
+            list(zip(X, y)), batch_size=batch_size)
         if self.device=="cuda":
             self.model.to('cuda')
             
-        for epoch in tqdm(range(wandb.config.epochs if wandb_verbose else 10)):
+        for epoch in tqdm(range(wandb.config.epochs if wandb_verbose else 100)):
         
             running_loss = 0
             
             for xs, ys in data_loader:
+               #print(xs)
+                #input()
                 if self.device=="cuda":
                     xs.to("cuda")
                     ys.to("cuda")
@@ -319,18 +214,20 @@ class QPNN:
                     ys.to("cpu")
                 else:
                     res=self.model(xs)
-                    
+                #print(res)   
                 loss_evaluated = loss(res, ys)
-
+               # print(loss_evaluated)
+                #print(res)
+                #input()
                 loss_evaluated.backward()
         
                 opt.step()
         
                 running_loss += loss_evaluated
         
-            avg_loss = running_loss / 1 if batches==0 else batches
-            if verbose: 
-                print("Average loss over epoch {}: {:.4f}".format(epoch + 1, avg_loss))
+            avg_loss = running_loss# / 1 if batches==0 else batches
+           # if verbose: 
+           #     print("Average loss over epoch {}: {:.4f}".format(epoch + 1, avg_loss))
             if wandb_verbose:
                 wandb.log({"loss":avg_loss })
             #VALIDATION
@@ -344,9 +241,9 @@ class QPNN:
 
                 correct_val = [1 if p == p_true else 0 for p, p_true in zip(predictions_val, y_val_pos)]
                 accuracy_val = sum(correct_val) / len(correct_val)
-                if verbose:
-                    print(f"Validation Accuracy: {accuracy_val * 100}%")
-                    print(f"Validation Loss: {loss_evaluated_val}")
+                #if verbose:
+                #    print(f"Validation Accuracy: {accuracy_val * 100}%")
+                #    print(f"Validation Loss: {loss_evaluated_val}")
                 if wandb_verbose:
                     wandb.log({"accuracy_validation":accuracy_val * 100,"validation_loss":loss_evaluated_val})
                     
@@ -354,9 +251,12 @@ class QPNN:
                 y_pred = self.model(X).to("cpu")
             else:
                 y_pred = self.model(X)
+ 
             predictions = torch.argmax(y_pred, axis=1).detach().numpy()
             truelabel=torch.argmax(y, axis=1).detach().numpy()
-            
+            #print(predictions)
+            #print(truelabel)
+            ##input()
             correct = [1 if p == p_true else 0 for p, p_true in zip(predictions, truelabel)]
             accuracy = sum(correct) / len(correct)
             if verbose:

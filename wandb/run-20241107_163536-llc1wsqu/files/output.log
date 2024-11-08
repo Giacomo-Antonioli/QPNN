@@ -1,0 +1,157 @@
+Initializing Model, using device:  cpu
+C:\Users\giaco\Documents\QPNN\QPNN\QPNN.py:299: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  y = torch.tensor(self.y, requires_grad=False).float()
+C:\Users\giaco\Documents\QPNN\QPNN\QPNN.py:302: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  yval = torch.tensor(self.yval, requires_grad=False).float()
+batches:  6
+ 20%|██        | 10/50 [00:05<00:21,  1.84it/s]
+Validation Accuracy: 59.09090909090909%
+Validation Loss: 0.5881328582763672
+Accuracy: 66.4179104477612%
+Validation Accuracy: 46.96969696969697%
+Validation Loss: 0.5884963274002075
+Accuracy: 51.49253731343284%
+Validation Accuracy: 46.96969696969697%
+Validation Loss: 0.5905345678329468
+Accuracy: 51.49253731343284%
+Validation Accuracy: 46.96969696969697%
+Validation Loss: 0.5884695649147034
+Accuracy: 51.49253731343284%
+Validation Accuracy: 46.96969696969697%
+Validation Loss: 0.5891526937484741
+Accuracy: 51.49253731343284%
+Validation Accuracy: 46.96969696969697%
+Validation Loss: 0.5864442586898804
+Accuracy: 51.49253731343284%
+Validation Accuracy: 46.96969696969697%
+Validation Loss: 0.5862436890602112
+Accuracy: 51.49253731343284%
+Validation Accuracy: 46.96969696969697%
+Validation Loss: 0.5871601104736328
+Accuracy: 51.49253731343284%
+Validation Accuracy: 46.96969696969697%
+Validation Loss: 0.5896881818771362
+Accuracy: 51.49253731343284%
+Validation Accuracy: 46.96969696969697%
+Validation Loss: 0.5877044796943665
+Accuracy: 51.49253731343284%
+Validation Accuracy: 46.96969696969697%
+Validation Loss: 0.5910289287567139
+Accuracy: 51.49253731343284%
+Validation Accuracy: 46.96969696969697%
+Validation Loss: 0.5877777934074402
+Accuracy: 51.49253731343284%
+Validation Accuracy: 46.96969696969697%
+Validation Loss: 0.5877735614776611
+Accuracy: 51.49253731343284%
+Validation Accuracy: 46.96969696969697%
+Validation Loss: 0.5887324810028076
+Accuracy: 51.49253731343284%
+Validation Accuracy: 46.96969696969697%
+Validation Loss: 0.5877482891082764
+Accuracy: 51.49253731343284%
+Validation Accuracy: 46.96969696969697%
+Validation Loss: 0.5894047021865845
+Accuracy: 51.49253731343284%
+Validation Accuracy: 46.96969696969697%
+Validation Loss: 0.5874209403991699
+Accuracy: 51.49253731343284%
+Validation Accuracy: 46.96969696969697%
+Validation Loss: 0.5876508951187134
+Accuracy: 51.49253731343284%
+Validation Accuracy: 46.96969696969697%
+Validation Loss: 0.5882485508918762
+Accuracy: 51.49253731343284%
+Validation Accuracy: 46.96969696969697%
+Validation Loss: 0.587911069393158
+Accuracy: 51.49253731343284%
+Validation Accuracy: 46.96969696969697%
+Validation Loss: 0.5871968865394592
+Accuracy: 51.49253731343284%
+Validation Accuracy: 46.96969696969697%
+Validation Loss: 0.5876853466033936
+Accuracy: 51.49253731343284%
+Validation Accuracy: 46.96969696969697%
+Validation Loss: 0.5884302854537964
+Accuracy: 51.49253731343284%
+Validation Accuracy: 46.96969696969697%
+Validation Loss: 0.5878767371177673
+Accuracy: 51.49253731343284%
+Validation Accuracy: 46.96969696969697%
+Validation Loss: 0.5887824296951294
+Accuracy: 51.49253731343284%
+Validation Accuracy: 46.96969696969697%
+Validation Loss: 0.5872193574905396
+Accuracy: 51.49253731343284%
+Validation Accuracy: 46.96969696969697%
+Validation Loss: 0.5871056914329529
+Accuracy: 51.49253731343284%
+Validation Accuracy: 46.96969696969697%
+Validation Loss: 0.5861582159996033
+Accuracy: 51.49253731343284%
+Validation Accuracy: 84.84848484848484%
+Validation Loss: 0.5891169309616089
+Accuracy: 76.86567164179104%
+Validation Accuracy: 46.96969696969697%
+Validation Loss: 0.587324857711792
+Accuracy: 51.49253731343284%
+Validation Accuracy: 84.84848484848484%
+Validation Loss: 0.5893599390983582
+Accuracy: 79.1044776119403%
+Validation Accuracy: 80.3030303030303%
+Validation Loss: 0.5803197622299194
+Accuracy: 74.6268656716418%
+Validation Accuracy: 84.84848484848484%
+Validation Loss: 0.5787200331687927
+Accuracy: 80.59701492537313%
+Validation Accuracy: 86.36363636363636%
+Validation Loss: 0.5686957836151123
+Accuracy: 82.08955223880598%
+Validation Accuracy: 89.39393939393939%
+Validation Loss: 0.5592307448387146
+Accuracy: 86.56716417910447%
+Validation Accuracy: 89.39393939393939%
+Validation Loss: 0.5037051439285278
+Accuracy: 85.07462686567165%
+Validation Accuracy: 86.36363636363636%
+Validation Loss: 0.469461590051651
+Accuracy: 88.05970149253731%
+Validation Accuracy: 90.9090909090909%
+Validation Loss: 0.4391598105430603
+Accuracy: 88.05970149253731%
+Validation Accuracy: 87.87878787878788%
+Validation Loss: 0.4368758797645569
+Accuracy: 90.29850746268657%
+Validation Accuracy: 89.39393939393939%
+Validation Loss: 0.4291965067386627
+Accuracy: 87.31343283582089%
+Validation Accuracy: 90.9090909090909%
+Validation Loss: 0.42976805567741394
+Accuracy: 88.80597014925374%
+Validation Accuracy: 84.84848484848484%
+Validation Loss: 0.4486883878707886
+Accuracy: 89.55223880597015%
+Validation Accuracy: 89.39393939393939%
+Validation Loss: 0.4246032238006592
+Accuracy: 88.05970149253731%
+Validation Accuracy: 84.84848484848484%
+Validation Loss: 0.46777111291885376
+Accuracy: 88.80597014925374%
+Validation Accuracy: 86.36363636363636%
+Validation Loss: 0.44551563262939453
+Accuracy: 81.34328358208955%
+Validation Accuracy: 83.33333333333334%
+Validation Loss: 0.4926244616508484
+Accuracy: 87.31343283582089%
+Validation Accuracy: 86.36363636363636%
+Validation Loss: 0.4418042004108429
+Accuracy: 82.83582089552239%
+Validation Accuracy: 83.33333333333334%
+Validation Loss: 0.4645889401435852
+Accuracy: 88.05970149253731%
+Validation Accuracy: 86.36363636363636%
+Validation Loss: 0.435894638299942
+Accuracy: 88.05970149253731%
+Validation Accuracy: 84.84848484848484%
+Validation Loss: 0.4528750479221344
+Accuracy: 89.55223880597015%

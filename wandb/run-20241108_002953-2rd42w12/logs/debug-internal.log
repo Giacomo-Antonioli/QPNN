@@ -1,0 +1,8 @@
+{"time":"2024-11-08T00:29:53.5260734+01:00","level":"INFO","msg":"using version","core version":"0.18.6"}
+{"time":"2024-11-08T00:29:53.5260734+01:00","level":"INFO","msg":"created symlink","path":"C:\\Users\\giaco\\Documents\\QPNN\\QPNN\\wandb\\run-20241108_002953-2rd42w12\\logs\\debug-core.log"}
+{"time":"2024-11-08T00:29:53.6451372+01:00","level":"INFO","msg":"created new stream","id":"2rd42w12"}
+{"time":"2024-11-08T00:29:53.6451372+01:00","level":"INFO","msg":"stream: started","id":"2rd42w12"}
+{"time":"2024-11-08T00:29:53.6451372+01:00","level":"INFO","msg":"sender: started","stream_id":"2rd42w12"}
+{"time":"2024-11-08T00:29:53.6451372+01:00","level":"INFO","msg":"handler: started","stream_id":{"value":"2rd42w12"}}
+{"time":"2024-11-08T00:29:53.6451372+01:00","level":"INFO","msg":"writer: Do: started","stream_id":{"value":"2rd42w12"}}
+{"time":"2024-11-08T00:29:54.1676335+01:00","level":"INFO","msg":"Starting system monitor"}

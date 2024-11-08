@@ -1,0 +1,407 @@
+Initializing Model, using device:  cpu
+C:\Users\giaco\Documents\QPNN\QPNN\QPNN.py:299: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  y = torch.tensor(self.y, requires_grad=False).float()
+C:\Users\giaco\Documents\QPNN\QPNN\QPNN.py:302: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  yval = torch.tensor(self.yval, requires_grad=False).float()
+batches:  1
+  7%|▋         | 7/100 [00:01<00:17,  5.21it/s]
+Average loss over epoch 1: 1.0976
+Validation Accuracy: 32.0%
+Validation Loss: 1.099777340888977
+Accuracy: 34.0%
+Average loss over epoch 2: 1.0905
+Validation Accuracy: 32.0%
+Validation Loss: 1.0972014665603638
+Accuracy: 34.0%
+Average loss over epoch 3: 1.0883
+Validation Accuracy: 32.0%
+Validation Loss: 1.0959895849227905
+Accuracy: 31.0%
+Average loss over epoch 4: 1.0872
+Validation Accuracy: 36.0%
+Validation Loss: 1.0949844121932983
+Accuracy: 46.0%
+Average loss over epoch 5: 1.0864
+Validation Accuracy: 30.0%
+Validation Loss: 1.0942623615264893
+Accuracy: 47.0%
+Average loss over epoch 6: 1.0858
+Validation Accuracy: 30.0%
+Validation Loss: 1.0936254262924194
+Accuracy: 44.0%
+Average loss over epoch 7: 1.0852
+Validation Accuracy: 32.0%
+Validation Loss: 1.0930883884429932
+Accuracy: 38.0%
+Average loss over epoch 8: 1.0848
+Validation Accuracy: 32.0%
+Validation Loss: 1.0926053524017334
+Accuracy: 36.0%
+Average loss over epoch 9: 1.0843
+Validation Accuracy: 32.0%
+Validation Loss: 1.0921738147735596
+Accuracy: 36.0%
+Average loss over epoch 10: 1.0839
+Validation Accuracy: 32.0%
+Validation Loss: 1.0917787551879883
+Accuracy: 35.0%
+Average loss over epoch 11: 1.0836
+Validation Accuracy: 32.0%
+Validation Loss: 1.0914161205291748
+Accuracy: 35.0%
+Average loss over epoch 12: 1.0832
+Validation Accuracy: 30.0%
+Validation Loss: 1.0910792350769043
+Accuracy: 35.0%
+Average loss over epoch 13: 1.0829
+Validation Accuracy: 30.0%
+Validation Loss: 1.0907645225524902
+Accuracy: 35.0%
+Average loss over epoch 14: 1.0826
+Validation Accuracy: 30.0%
+Validation Loss: 1.090468168258667
+Accuracy: 35.0%
+Average loss over epoch 15: 1.0823
+Validation Accuracy: 30.0%
+Validation Loss: 1.0901877880096436
+Accuracy: 35.0%
+Average loss over epoch 16: 1.0820
+Validation Accuracy: 30.0%
+Validation Loss: 1.0899207592010498
+Accuracy: 35.0%
+Average loss over epoch 17: 1.0817
+Validation Accuracy: 30.0%
+Validation Loss: 1.089665412902832
+Accuracy: 35.0%
+Average loss over epoch 18: 1.0815
+Validation Accuracy: 30.0%
+Validation Loss: 1.0894198417663574
+Accuracy: 35.0%
+Average loss over epoch 19: 1.0812
+Validation Accuracy: 30.0%
+Validation Loss: 1.08918297290802
+Accuracy: 35.0%
+Average loss over epoch 20: 1.0809
+Validation Accuracy: 30.0%
+Validation Loss: 1.0889533758163452
+Accuracy: 35.0%
+Average loss over epoch 21: 1.0807
+Validation Accuracy: 30.0%
+Validation Loss: 1.0887303352355957
+Accuracy: 35.0%
+Average loss over epoch 22: 1.0804
+Validation Accuracy: 32.0%
+Validation Loss: 1.0885131359100342
+Accuracy: 35.0%
+Average loss over epoch 23: 1.0802
+Validation Accuracy: 32.0%
+Validation Loss: 1.0883010625839233
+Accuracy: 35.0%
+Average loss over epoch 24: 1.0800
+Validation Accuracy: 32.0%
+Validation Loss: 1.0880934000015259
+Accuracy: 35.0%
+Average loss over epoch 25: 1.0798
+Validation Accuracy: 32.0%
+Validation Loss: 1.0878897905349731
+Accuracy: 35.0%
+Average loss over epoch 26: 1.0796
+Validation Accuracy: 32.0%
+Validation Loss: 1.0876901149749756
+Accuracy: 36.0%
+Average loss over epoch 27: 1.0793
+Validation Accuracy: 32.0%
+Validation Loss: 1.087493896484375
+Accuracy: 36.0%
+Average loss over epoch 28: 1.0791
+Validation Accuracy: 32.0%
+Validation Loss: 1.0873008966445923
+Accuracy: 36.0%
+Average loss over epoch 29: 1.0790
+Validation Accuracy: 34.0%
+Validation Loss: 1.0871108770370483
+Accuracy: 36.0%
+Average loss over epoch 30: 1.0788
+Validation Accuracy: 34.0%
+Validation Loss: 1.0869237184524536
+Accuracy: 36.0%
+Average loss over epoch 31: 1.0786
+Validation Accuracy: 34.0%
+Validation Loss: 1.086739420890808
+Accuracy: 37.0%
+Average loss over epoch 32: 1.0784
+Validation Accuracy: 34.0%
+Validation Loss: 1.0865576267242432
+Accuracy: 37.0%
+Average loss over epoch 33: 1.0782
+Validation Accuracy: 34.0%
+Validation Loss: 1.0863784551620483
+Accuracy: 37.0%
+Average loss over epoch 34: 1.0781
+Validation Accuracy: 36.0%
+Validation Loss: 1.086201786994934
+Accuracy: 37.0%
+Average loss over epoch 35: 1.0779
+Validation Accuracy: 36.0%
+Validation Loss: 1.0860275030136108
+Accuracy: 38.0%
+Average loss over epoch 36: 1.0777
+Validation Accuracy: 36.0%
+Validation Loss: 1.0858556032180786
+Accuracy: 38.0%
+Average loss over epoch 37: 1.0776
+Validation Accuracy: 36.0%
+Validation Loss: 1.0856858491897583
+Accuracy: 38.0%
+Average loss over epoch 38: 1.0774
+Validation Accuracy: 36.0%
+Validation Loss: 1.085518479347229
+Accuracy: 38.0%
+Average loss over epoch 39: 1.0773
+Validation Accuracy: 36.0%
+Validation Loss: 1.0853533744812012
+Accuracy: 38.0%
+Average loss over epoch 40: 1.0771
+Validation Accuracy: 38.0%
+Validation Loss: 1.0851902961730957
+Accuracy: 38.0%
+Average loss over epoch 41: 1.0770
+Validation Accuracy: 38.0%
+Validation Loss: 1.0850292444229126
+Accuracy: 38.0%
+Average loss over epoch 42: 1.0769
+Validation Accuracy: 40.0%
+Validation Loss: 1.0848703384399414
+Accuracy: 38.0%
+Average loss over epoch 43: 1.0767
+Validation Accuracy: 40.0%
+Validation Loss: 1.0847135782241821
+Accuracy: 40.0%
+Average loss over epoch 44: 1.0766
+Validation Accuracy: 40.0%
+Validation Loss: 1.0845588445663452
+Accuracy: 40.0%
+Average loss over epoch 45: 1.0765
+Validation Accuracy: 40.0%
+Validation Loss: 1.084405779838562
+Accuracy: 40.0%
+Average loss over epoch 46: 1.0764
+Validation Accuracy: 40.0%
+Validation Loss: 1.0842547416687012
+Accuracy: 40.0%
+Average loss over epoch 47: 1.0762
+Validation Accuracy: 40.0%
+Validation Loss: 1.0841056108474731
+Accuracy: 40.0%
+Average loss over epoch 48: 1.0761
+Validation Accuracy: 40.0%
+Validation Loss: 1.0839581489562988
+Accuracy: 40.0%
+Average loss over epoch 49: 1.0760
+Validation Accuracy: 42.0%
+Validation Loss: 1.0838125944137573
+Accuracy: 42.0%
+Average loss over epoch 50: 1.0759
+Validation Accuracy: 42.0%
+Validation Loss: 1.0836687088012695
+Accuracy: 42.0%
+Average loss over epoch 51: 1.0758
+Validation Accuracy: 42.0%
+Validation Loss: 1.0835264921188354
+Accuracy: 42.0%
+Average loss over epoch 52: 1.0757
+Validation Accuracy: 42.0%
+Validation Loss: 1.0833858251571655
+Accuracy: 42.0%
+Average loss over epoch 53: 1.0756
+Validation Accuracy: 42.0%
+Validation Loss: 1.0832467079162598
+Accuracy: 42.0%
+Average loss over epoch 54: 1.0755
+Validation Accuracy: 42.0%
+Validation Loss: 1.0831092596054077
+Accuracy: 42.0%
+Average loss over epoch 55: 1.0754
+Validation Accuracy: 42.0%
+Validation Loss: 1.0829731225967407
+Accuracy: 42.0%
+Average loss over epoch 56: 1.0753
+Validation Accuracy: 42.0%
+Validation Loss: 1.0828384160995483
+Accuracy: 42.0%
+Average loss over epoch 57: 1.0752
+Validation Accuracy: 42.0%
+Validation Loss: 1.0827052593231201
+Accuracy: 42.0%
+Average loss over epoch 58: 1.0751
+Validation Accuracy: 44.0%
+Validation Loss: 1.0825731754302979
+Accuracy: 42.0%
+Average loss over epoch 59: 1.0750
+Validation Accuracy: 44.0%
+Validation Loss: 1.0824424028396606
+Accuracy: 42.0%
+Average loss over epoch 60: 1.0749
+Validation Accuracy: 46.0%
+Validation Loss: 1.082312822341919
+Accuracy: 42.0%
+Average loss over epoch 61: 1.0748
+Validation Accuracy: 46.0%
+Validation Loss: 1.0821845531463623
+Accuracy: 43.0%
+Average loss over epoch 62: 1.0747
+Validation Accuracy: 46.0%
+Validation Loss: 1.082057237625122
+Accuracy: 43.0%
+Average loss over epoch 63: 1.0746
+Validation Accuracy: 46.0%
+Validation Loss: 1.0819309949874878
+Accuracy: 43.0%
+Average loss over epoch 64: 1.0745
+Validation Accuracy: 46.0%
+Validation Loss: 1.0818058252334595
+Accuracy: 43.0%
+Average loss over epoch 65: 1.0744
+Validation Accuracy: 46.0%
+Validation Loss: 1.081681489944458
+Accuracy: 43.0%
+Average loss over epoch 66: 1.0744
+Validation Accuracy: 46.0%
+Validation Loss: 1.081558108329773
+Accuracy: 43.0%
+Average loss over epoch 67: 1.0743
+Validation Accuracy: 46.0%
+Validation Loss: 1.0814356803894043
+Accuracy: 43.0%
+Average loss over epoch 68: 1.0742
+Validation Accuracy: 46.0%
+Validation Loss: 1.081313967704773
+Accuracy: 43.0%
+Average loss over epoch 69: 1.0741
+Validation Accuracy: 46.0%
+Validation Loss: 1.081192970275879
+Accuracy: 43.0%
+Average loss over epoch 70: 1.0740
+Validation Accuracy: 46.0%
+Validation Loss: 1.0810726881027222
+Accuracy: 43.0%
+Average loss over epoch 71: 1.0740
+Validation Accuracy: 46.0%
+Validation Loss: 1.0809531211853027
+Accuracy: 43.0%
+Average loss over epoch 72: 1.0739
+Validation Accuracy: 46.0%
+Validation Loss: 1.080834150314331
+Accuracy: 43.0%
+Average loss over epoch 73: 1.0738
+Validation Accuracy: 46.0%
+Validation Loss: 1.0807156562805176
+Accuracy: 44.0%
+Average loss over epoch 74: 1.0737
+Validation Accuracy: 48.0%
+Validation Loss: 1.0805976390838623
+Accuracy: 46.0%
+Average loss over epoch 75: 1.0736
+Validation Accuracy: 50.0%
+Validation Loss: 1.0804802179336548
+Accuracy: 46.0%
+Average loss over epoch 76: 1.0736
+Validation Accuracy: 50.0%
+Validation Loss: 1.080363154411316
+Accuracy: 46.0%
+Average loss over epoch 77: 1.0735
+Validation Accuracy: 50.0%
+Validation Loss: 1.0802464485168457
+Accuracy: 46.0%
+Average loss over epoch 78: 1.0734
+Validation Accuracy: 50.0%
+Validation Loss: 1.0801299810409546
+Accuracy: 47.0%
+Average loss over epoch 79: 1.0734
+Validation Accuracy: 50.0%
+Validation Loss: 1.0800139904022217
+Accuracy: 47.0%
+Average loss over epoch 80: 1.0733
+Validation Accuracy: 50.0%
+Validation Loss: 1.0798982381820679
+Accuracy: 47.0%
+Average loss over epoch 81: 1.0732
+Validation Accuracy: 50.0%
+Validation Loss: 1.0797823667526245
+Accuracy: 47.0%
+Average loss over epoch 82: 1.0731
+Validation Accuracy: 50.0%
+Validation Loss: 1.079667091369629
+Accuracy: 47.0%
+Average loss over epoch 83: 1.0731
+Validation Accuracy: 50.0%
+Validation Loss: 1.0795514583587646
+Accuracy: 47.0%
+Average loss over epoch 84: 1.0730
+Validation Accuracy: 50.0%
+Validation Loss: 1.0794365406036377
+Accuracy: 47.0%
+Average loss over epoch 85: 1.0729
+Validation Accuracy: 50.0%
+Validation Loss: 1.0793207883834839
+Accuracy: 47.0%
+Average loss over epoch 86: 1.0728
+Validation Accuracy: 50.0%
+Validation Loss: 1.0792065858840942
+Accuracy: 47.0%
+Average loss over epoch 87: 1.0728
+Validation Accuracy: 50.0%
+Validation Loss: 1.079089879989624
+Accuracy: 47.0%
+Average loss over epoch 88: 1.0727
+Validation Accuracy: 50.0%
+Validation Loss: 1.0789763927459717
+Accuracy: 47.0%
+Average loss over epoch 89: 1.0726
+Validation Accuracy: 50.0%
+Validation Loss: 1.0788582563400269
+Accuracy: 48.0%
+Average loss over epoch 90: 1.0726
+Validation Accuracy: 50.0%
+Validation Loss: 1.0787466764450073
+Accuracy: 48.0%
+Average loss over epoch 91: 1.0725
+Validation Accuracy: 50.0%
+Validation Loss: 1.0786250829696655
+Accuracy: 48.0%
+Average loss over epoch 92: 1.0724
+Validation Accuracy: 52.0%
+Validation Loss: 1.078518033027649
+Accuracy: 49.0%
+Average loss over epoch 93: 1.0724
+Validation Accuracy: 52.0%
+Validation Loss: 1.0783880949020386
+Accuracy: 51.0%
+Average loss over epoch 94: 1.0723
+Validation Accuracy: 52.0%
+Validation Loss: 1.0782930850982666
+Accuracy: 51.0%
+Average loss over epoch 95: 1.0722
+Validation Accuracy: 54.0%
+Validation Loss: 1.0781430006027222
+Accuracy: 52.0%
+Average loss over epoch 96: 1.0722
+Validation Accuracy: 54.0%
+Validation Loss: 1.0780788660049438
+Accuracy: 51.0%
+Average loss over epoch 97: 1.0721
+Validation Accuracy: 56.00000000000001%
+Validation Loss: 1.0778779983520508
+Accuracy: 53.0%
+Average loss over epoch 98: 1.0720
+Validation Accuracy: 54.0%
+Validation Loss: 1.077894926071167
+Accuracy: 52.0%
+Average loss over epoch 99: 1.0719
+Validation Accuracy: 56.00000000000001%
+Validation Loss: 1.0775700807571411
+Accuracy: 53.0%
+Average loss over epoch 100: 1.0719
+Validation Accuracy: 52.0%
+Validation Loss: 1.077772855758667
+Accuracy: 50.0%

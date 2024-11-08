@@ -1,0 +1,17 @@
+{"time":"2024-11-07T17:15:37.1259654+01:00","level":"INFO","msg":"using version","core version":"0.18.6"}
+{"time":"2024-11-07T17:15:37.1259654+01:00","level":"INFO","msg":"created symlink","path":"C:\\Users\\giaco\\Documents\\QPNN\\QPNN\\wandb\\run-20241107_171537-jdpp3m66\\logs\\debug-core.log"}
+{"time":"2024-11-07T17:15:37.6584671+01:00","level":"INFO","msg":"created new stream","id":"jdpp3m66"}
+{"time":"2024-11-07T17:15:37.6584671+01:00","level":"INFO","msg":"stream: started","id":"jdpp3m66"}
+{"time":"2024-11-07T17:15:37.6584671+01:00","level":"INFO","msg":"sender: started","stream_id":"jdpp3m66"}
+{"time":"2024-11-07T17:15:37.6584671+01:00","level":"INFO","msg":"writer: Do: started","stream_id":{"value":"jdpp3m66"}}
+{"time":"2024-11-07T17:15:37.6584671+01:00","level":"INFO","msg":"handler: started","stream_id":{"value":"jdpp3m66"}}
+{"time":"2024-11-07T17:15:37.9633719+01:00","level":"INFO","msg":"Starting system monitor"}
+{"time":"2024-11-07T17:16:26.634934+01:00","level":"INFO","msg":"Stopping system monitor"}
+{"time":"2024-11-07T17:16:26.6359924+01:00","level":"INFO","msg":"Stopped system monitor"}
+{"time":"2024-11-07T17:16:27.5941395+01:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2024-11-07T17:16:27.6425275+01:00","level":"INFO","msg":"handler: operation stats","stats":{"operations":[{"desc":"uploading history, summary, console logs","runtime_seconds":0.0479158}],"total_operations":1}}
+{"time":"2024-11-07T17:16:29.0030916+01:00","level":"INFO","msg":"stream: closing","id":"jdpp3m66"}
+{"time":"2024-11-07T17:16:29.0030916+01:00","level":"INFO","msg":"handler: closed","stream_id":{"value":"jdpp3m66"}}
+{"time":"2024-11-07T17:16:29.0030916+01:00","level":"INFO","msg":"writer: Close: closed","stream_id":{"value":"jdpp3m66"}}
+{"time":"2024-11-07T17:16:29.0030916+01:00","level":"INFO","msg":"sender: closed","stream_id":"jdpp3m66"}
+{"time":"2024-11-07T17:16:29.0030916+01:00","level":"INFO","msg":"stream: closed","id":"jdpp3m66"}

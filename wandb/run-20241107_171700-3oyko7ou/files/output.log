@@ -1,0 +1,19 @@
+Initializing Model, using device:  cpu
+C:\Users\giaco\Documents\QPNN\QPNN\QPNN.py:299: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  y = torch.tensor(self.y, requires_grad=False).float()
+C:\Users\giaco\Documents\QPNN\QPNN\QPNN.py:302: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  yval = torch.tensor(self.yval, requires_grad=False).float()
+batches:  6
+  8%|▊         | 4/50 [00:03<00:34,  1.33it/s]
+Validation Accuracy: 30.303030303030305%
+Validation Loss: 0.6931535005569458
+Accuracy: 25.37313432835821%
+Validation Accuracy: 50.0%
+Validation Loss: 0.7012797594070435
+Accuracy: 50.0%
+Validation Accuracy: 75.75757575757575%
+Validation Loss: 0.6909922361373901
+Accuracy: 70.8955223880597%
+Validation Accuracy: 50.0%
+Validation Loss: 0.688173770904541
+Accuracy: 50.0%
