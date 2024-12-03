@@ -63,20 +63,19 @@ class QPNN:
         self.yval=yval
         self.architecture=[np.shape(X)[1]]+structure+[int((np.shape(y)[1]))]
         self.nqubits=np.max(self.architecture)
-        if torch.cuda.is_available():
-            self.device="cuda"
-            print("YES ")
-        else:
-            self.device="cpu"
-            print("NO")
-  
         self.devs=[]
         self.qnodes=[]
         self.qlayers=[]
         self.model_architecture=[]
         self.model=None
         
-        
+        if torch.cuda.is_available():
+            self.device="cuda"
+            print("YES ")
+        else:
+            self.device="cpu"
+            print("NO")
+
     def init_model(self,mod_arch=None):
         #print("Initializing Model, using device: ",self.device)
        
@@ -85,20 +84,22 @@ class QPNN:
                  self.architecture=[self.architecture[0]]+mod_arch+[self.architecture[-1]]
             else:
                 self.architecture=[self.architecture[0]]+[mod_arch]+[self.architecture[-1]]
-            print(self.architecture)
+         
         for layer in range(len(self.architecture)-1):
             n_layers = 1
             n_pars = int((2*max(self.architecture[layer],self.architecture[layer+1])-1-min(self.architecture[layer],self.architecture[layer+1]))*(min(self.architecture[layer+1],self.architecture[layer]))/2)
+            
             if self.device == "cuda":
-                dev = qml.device("lightning.gpu", wires=max(self.architecture[layer],self.architecture[layer+1])) #TODO: ADD CUDA
+                dev = qml.device("lightning.gpu", wires=max(self.architecture[layer],self.architecture[layer+1]))  
 
             else:
 
-                dev = qml.device("default.qubit", wires=max(self.architecture[layer],self.architecture[layer+1])) #TODO: ADD CUDA
+                dev = qml.device("default.qubit", wires=max(self.architecture[layer],self.architecture[layer+1]))  
+            
             qnode = qml.QNode(self.probs_single, dev)
             weight_shapes = {"weights": (n_layers, n_pars),"weights_aux":(self.architecture[layer],self.architecture[layer+1])}
 
-            qlayer = qml.qnn.TorchLayer(qnode, weight_shapes,init_method=init_method)#
+            qlayer = qml.qnn.TorchLayer(qnode, weight_shapes,init_method=init_method)
             self.devs.append(dev)
             self.qnodes.append(qnode)
             self.qlayers.append(qlayer)
@@ -106,38 +107,26 @@ class QPNN:
             self.model_architecture.append(ProbsToUnaryLayer(self.architecture[layer+1]))
             print("adding qlayer")
             print("adding Prob to unitary")
-
-                #print("Layer[",layer,"]: arch:",self.architecture[layer] ," pars: ", n_pars)
-            #if layer!=len(self.architecture)-2:
             print("adding Sigmoid")
             
             self.model_architecture.append(torch.nn.Sigmoid())
-            #print(". Added probsToUnitary. Added Softmax ")
  
-    
-       #self.model_architecture.append(torch.nn.Linear(10,3))
         self.model= torch.nn.Sequential(*self.model_architecture)
         print("Architecture: ",self.architecture)
-        
-        #input()
-       # for index,x in  enumerate(reversed(list(self.model.parameters()))):
-        #    if index%2==0:
-        #        x.requires_grad =False    
-    
+ 
     
         
         
         
     def probs_single(self,inputs, weights,weights_aux):
+        
         shape=np.shape(weights_aux)
         max_q=np.max(shape)
         
         q_base=max_q-shape[0]
-        #print("shape:", shape)
-        #print("qbase: ",q_base)
-        #print(weights)
         qml.PauliX(wires=q_base)
         prd_fact=1.0
+
         for qi_idx, qi in enumerate(range(max_q-shape[0],max_q-1)):
 
             theta_i=2*torch.arccos((inputs[...,qi_idx])/prd_fact)
@@ -157,6 +146,8 @@ class QPNN:
 
         return qml.probs(wires=range(max_q-shape[1],max_q))
     
+
+
     def predict(self, X):
         X = torch.tensor(X, requires_grad=False).float()
         return torch.argmax(self.model(X), dim=1).detach().numpy()
@@ -183,10 +174,11 @@ class QPNN:
         else:
             opt = torch.optim.Adam(self.model.parameters(), lr=0.2)
 
-        loss = torch.nn.CrossEntropyLoss()#.to("cuda")
+        loss = torch.nn.CrossEntropyLoss() 
         
         X = torch.tensor(self.X, requires_grad=False).float()
         y = torch.tensor(self.y, requires_grad=False).float()
+
         if self.xval is not None:
             Xval = torch.tensor(self.xval, requires_grad=False).float()
             yval = torch.tensor(self.yval, requires_grad=False).float()
@@ -202,22 +194,23 @@ class QPNN:
             
         batch_size =len(y) #wandb.config.batch_size if wandb_verbose else 50
         batches = 1
-        #print("batches: ",batches)
 
-        data_loader = torch.utils.data.DataLoader(
-            list(zip(X, y)), batch_size=batch_size)
+        data_loader = torch.utils.data.DataLoader(list(zip(X, y)), batch_size=batch_size)
+
         if self.device=="cuda":
             self.model.to('cuda')
+
         accuracy=0
         avg_loss=0
+
         pbar=tqdm(range(wandb.config.epochs if wandb_verbose else 500))
+
         for epoch in pbar:
         
             running_loss = 0
             
             for xs, ys in data_loader:
-               #print(xs)
-                #input()
+ 
                 if self.device=="cuda":
                     xs.to("cuda")
                     ys.to("cuda")
@@ -228,11 +221,9 @@ class QPNN:
                     ys.to("cpu")
                 else:
                     res=self.model(xs)
-                #print(res)   
+  
                 loss_evaluated = loss(res, ys)
-                #print(loss_evaluated)
-                #print(res)
-                #input()
+ 
                 loss_evaluated.backward()
         
                 opt.step()
@@ -266,19 +257,14 @@ class QPNN:
             else:
                 y_pred = self.model(X)
  
+ 
             predictions = torch.argmax(y_pred, axis=1).detach().numpy()
             truelabel=torch.argmax(y, axis=1).detach().numpy()
-            #print(predictions)
-            #print(truelabel)
-            ##input()
             correct = [1 if p == p_true else 0 for p, p_true in zip(predictions, truelabel)]
             accuracy = sum(correct) / len(correct)
             pbar.set_postfix({'ACC': accuracy*100, 'loss': avg_loss.detach().item() })
        	    wandb.log({"Accuracy":accuracy*100})
-	# if verbose:
-        #    print(f"Accuracy: {accuracy * 100}%")
-       # if wandb_verbose:
-       #     wandb.log({"accuracy":accuracy * 100})
+ 
         
         
         

@@ -30,25 +30,9 @@ def generate_sweep_config():
             'min': 0.1,
             'max': 0.5
           },
-       # 'batch_size': {
-            # integers between 32 and 256
-            # with evenly-distributed logarithms 
-         #   'distribution': 'q_log_uniform_values',
-        #    'q': 2,
-        #    'min': 8,
-        #    'max': 100,
-         # }
         })
-    #pprint.pprint(sweep_config)
     return sweep_config
 
-#for i in range(10):
-#    print("\n\n\n\n\n\nTEST: ",i)
-#    x,xval,y,yval=get_dataset(dataset_list[target_dataset],split=True)
-#    net=QPNN([10],x,y,xval,yval)#,
-#    if not gpu:
-#        net.device="cpu"
-#    net.train(wandb_verbose=True,verbose=True)
 
 def main(gpu=False):
     x,xval,y,yval=get_dataset(dataset_list[target_dataset],split=True)
