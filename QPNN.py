@@ -65,9 +65,10 @@ class QPNN:
         self.nqubits=np.max(self.architecture)
         if torch.cuda.is_available():
             self.device="cuda"
+            print("YES ")
         else:
             self.device="cpu"
-
+            print("NO")
   
         self.devs=[]
         self.qnodes=[]
@@ -77,7 +78,7 @@ class QPNN:
         
         
     def init_model(self,mod_arch=None):
-        print("Initializing Model, using device: ",self.device)
+        #print("Initializing Model, using device: ",self.device)
        
         if mod_arch != None:
             self.architecture=[self.architecture[0]]+[mod_arch]+[self.architecture[-1]]
@@ -85,7 +86,7 @@ class QPNN:
             n_layers = 1
             n_pars = int((2*max(self.architecture[layer],self.architecture[layer+1])-1-min(self.architecture[layer],self.architecture[layer+1]))*(min(self.architecture[layer+1],self.architecture[layer]))/2)
             if self.device == "cuda":
-                dev = qml.device("default.qubit.torch", wires=max(self.architecture[layer],self.architecture[layer+1]),torch_device="cuda:0") #TODO: ADD CUDA
+                dev = qml.device("lightning.gpu", wires=max(self.architecture[layer],self.architecture[layer+1])) #TODO: ADD CUDA
 
             else:
 
@@ -99,14 +100,21 @@ class QPNN:
             self.qlayers.append(qlayer)
             self.model_architecture.append(qlayer)
             self.model_architecture.append(ProbsToUnaryLayer(self.architecture[layer+1]))
-            print("Layer[",layer,"]: arch:",self.architecture[layer] ," pars: ", n_pars)
+            print("adding qlayer")
+            print("adding Prob to unitary")
+
+                #print("Layer[",layer,"]: arch:",self.architecture[layer] ," pars: ", n_pars)
             #if layer!=len(self.architecture)-2:
-                        
-            self.model_architecture.append(torch.nn.Softmax(dim=1))
-            print(". Added probsToUnitary. Added Softmax ")
+            print("adding Sigmoid")
+            
+            self.model_architecture.append(torch.nn.Sigmoid())
+            #print(". Added probsToUnitary. Added Softmax ")
+ 
+    
+       #self.model_architecture.append(torch.nn.Linear(10,3))
         self.model= torch.nn.Sequential(*self.model_architecture)
-        print("Architecture: ")
-        print(self.architecture)
+        print("Architecture: ",self.architecture)
+        
         #input()
        # for index,x in  enumerate(reversed(list(self.model.parameters()))):
         #    if index%2==0:
@@ -169,9 +177,9 @@ class QPNN:
                 case "RMSPROP":
                      opt = torch.optim.RMSprop(self.model.parameters(), lr=wandb.config.learning_rate)
         else:
-            opt = torch.optim.SGD(self.model.parameters(), lr=0.01)
+            opt = torch.optim.Adam(self.model.parameters(), lr=0.2)
 
-        loss = torch.nn.CrossEntropyLoss().to("cuda")
+        loss = torch.nn.CrossEntropyLoss()#.to("cuda")
         
         X = torch.tensor(self.X, requires_grad=False).float()
         y = torch.tensor(self.y, requires_grad=False).float()
@@ -188,16 +196,18 @@ class QPNN:
                 yval.to("cuda")
 
             
-        batch_size =1 #wandb.config.batch_size if wandb_verbose else 50
-        batches = len(y) // batch_size
-        print("batches: ",batches)
+        batch_size =len(y) #wandb.config.batch_size if wandb_verbose else 50
+        batches = 1
+        #print("batches: ",batches)
 
         data_loader = torch.utils.data.DataLoader(
             list(zip(X, y)), batch_size=batch_size)
         if self.device=="cuda":
             self.model.to('cuda')
-            
-        for epoch in tqdm(range(wandb.config.epochs if wandb_verbose else 100)):
+        accuracy=0
+        avg_loss=0
+        pbar=tqdm(range(wandb.config.epochs if wandb_verbose else 500))
+        for epoch in pbar:
         
             running_loss = 0
             
@@ -216,7 +226,7 @@ class QPNN:
                     res=self.model(xs)
                 #print(res)   
                 loss_evaluated = loss(res, ys)
-               # print(loss_evaluated)
+                #print(loss_evaluated)
                 #print(res)
                 #input()
                 loss_evaluated.backward()
@@ -225,7 +235,7 @@ class QPNN:
         
                 running_loss += loss_evaluated
         
-            avg_loss = running_loss# / 1 if batches==0 else batches
+            avg_loss = running_loss# /batch_size# / 1 if batches==0 else batches
            # if verbose: 
            #     print("Average loss over epoch {}: {:.4f}".format(epoch + 1, avg_loss))
             if wandb_verbose:
@@ -259,9 +269,12 @@ class QPNN:
             ##input()
             correct = [1 if p == p_true else 0 for p, p_true in zip(predictions, truelabel)]
             accuracy = sum(correct) / len(correct)
-            if verbose:
-                print(f"Accuracy: {accuracy * 100}%")
-            if wandb_verbose:
-                wandb.log({"accuracy":accuracy * 100})
+            pbar.set_postfix({'ACC': accuracy*100, 'loss': avg_loss.detach().item() })
+       	    wandb.log({"Accuracy":accuracy*100})
+	# if verbose:
+        #    print(f"Accuracy: {accuracy * 100}%")
+       # if wandb_verbose:
+       #     wandb.log({"accuracy":accuracy * 100})
+        
         
         

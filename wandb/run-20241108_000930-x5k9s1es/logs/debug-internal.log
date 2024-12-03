@@ -1,8 +1,0 @@
-{"time":"2024-11-08T00:09:30.7485594+01:00","level":"INFO","msg":"using version","core version":"0.18.6"}
-{"time":"2024-11-08T00:09:30.7485594+01:00","level":"INFO","msg":"created symlink","path":"C:\\Users\\giaco\\Documents\\QPNN\\QPNN\\wandb\\run-20241108_000930-x5k9s1es\\logs\\debug-core.log"}
-{"time":"2024-11-08T00:09:30.8649641+01:00","level":"INFO","msg":"created new stream","id":"x5k9s1es"}
-{"time":"2024-11-08T00:09:30.8654557+01:00","level":"INFO","msg":"stream: started","id":"x5k9s1es"}
-{"time":"2024-11-08T00:09:30.8659689+01:00","level":"INFO","msg":"sender: started","stream_id":"x5k9s1es"}
-{"time":"2024-11-08T00:09:30.8659689+01:00","level":"INFO","msg":"writer: Do: started","stream_id":{"value":"x5k9s1es"}}
-{"time":"2024-11-08T00:09:30.866902+01:00","level":"INFO","msg":"handler: started","stream_id":{"value":"x5k9s1es"}}
-{"time":"2024-11-08T00:09:31.162072+01:00","level":"INFO","msg":"Starting system monitor"}
