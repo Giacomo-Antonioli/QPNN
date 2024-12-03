@@ -81,7 +81,11 @@ class QPNN:
         #print("Initializing Model, using device: ",self.device)
        
         if mod_arch != None:
-            self.architecture=[self.architecture[0]]+[mod_arch]+[self.architecture[-1]]
+            if type(mod_arch) is list:
+                 self.architecture=[self.architecture[0]]+mod_arch+[self.architecture[-1]]
+            else:
+                self.architecture=[self.architecture[0]]+[mod_arch]+[self.architecture[-1]]
+            print(self.architecture)
         for layer in range(len(self.architecture)-1):
             n_layers = 1
             n_pars = int((2*max(self.architecture[layer],self.architecture[layer+1])-1-min(self.architecture[layer],self.architecture[layer+1]))*(min(self.architecture[layer+1],self.architecture[layer]))/2)
