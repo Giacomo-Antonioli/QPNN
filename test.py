@@ -36,7 +36,9 @@ def generate_sweep_config():
 
 def main(gpu=False):
     x,xval,y,yval=get_dataset(dataset_list[target_dataset],split=True)
-    net=QPNN([5],x,y,xval,yval)#,
+
+    net=QPNN([],x,y,xval,yval)
+
     if not gpu:
         net.device="cpu"
     net.train(wandb_verbose=True,verbose=True)

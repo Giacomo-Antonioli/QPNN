@@ -21,7 +21,7 @@ from tqdm import tqdm
 
 
 
-dataset_list={"iris": 1,"digits": 2,"wine": 3,"cancer": 4, "iris_linear": 5, "moon": 6, "retinamnist": 7}
+dataset_list={"iris": 1,"digits": 2,"wine": 3,"cancer": 4, "iris_linear": 5, "moon": 6, "retinamnist": 7,"pca_digits":8}
 
 
 
@@ -37,7 +37,7 @@ def stereo_pj(X):
     return newX
 
 
-def get_dataset(index, split=True, split_percentage=0.33, standardization_mode=1):
+def get_dataset(index, pca=8, split=True, split_percentage=0.33, standardization_mode=1):
     """
     iris:          Load and return the iris dataset (classification).
     digits:        Load and return the digits dataset (classification).
@@ -76,7 +76,7 @@ def get_dataset(index, split=True, split_percentage=0.33, standardization_mode=1
             y=y-1
             
             # Initialize PCA and fit the data
-            pca_2 = decomposition.PCA(n_components=8)
+            pca_2 = decomposition.PCA(n_components=pca)
             pca_2.fit(X_digits)
             
             # Transforming DIGITS data to new dimensions(with 2 features)
