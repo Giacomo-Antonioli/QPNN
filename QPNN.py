@@ -57,12 +57,13 @@ class ProbsToUnaryLayer(torch.nn.Module):
         return input_var[:, filt]*12-6
         
 class QPNN:
-    def __init__(self,structure,X,y,xval=None,yval=None,connectivity=None):
+    def __init__(self,structure,X,y,xval=None,yval=None,connectivity=None,hot_qubits=None):
         self.X=X
         self.y=y
         self.xval=xval
         self.yval=yval
         self.connectivity=connectivity if (connectivity is not None) else '1d'
+        self.hot_qubits=hot_qubits if (hot_qubits is not None) else [0,]
 
         self.architecture=[np.shape(X)[1]]+structure+[int((np.shape(y)[1]))]
         self.nqubits=np.max(self.architecture)
@@ -78,6 +79,17 @@ class QPNN:
         self.qlayers=[]
         self.model_architecture=[]
         self.model=None
+
+
+        if self.connectivity=='full':
+            graph=[(i,j) for i in range(max_q-1) for j in range(i+1,max_q)]
+            probabilities={i:0.0 for i in range(max_q)}
+            nhot=len(self.hot_qubits)
+            for q_base in self.hot_qubits:
+                probabilities[q_base]=1.0/nhot
+            iterations=50
+            alpha=1e-4
+            _, self.edge_seq, _ = maximize_entropy_with_alpha(graph,probabilities,iterations,alpha)
         
         
     def init_model(self,mod_arch=None):
@@ -175,14 +187,8 @@ class QPNN:
         #print(weights)
         qml.PauliX(wires=q_base)
 
-        graph=[(i,j) for i in range(max_q-1) for j in range(i+1,max_q)]
-        probabilities={i:0.0 for i in range(max_q)}
-        probabilities[q_base]=1.0
-        iterations=20
-        alpha=1e-4
-        _, edge_seq, _ = maximize_entropy_with_alpha(graph,probabilities,iterations,alpha)
         npars=len(weights[0])
-        edge_seq_flat=[tp for ls in edge_seq for tp in ls][:max_q-1+npars]
+        edge_seq_flat=[tp for ls in edge_seq for tp in ls][:max_q-1+npars] # inputs + weights
 
         edge_ctr=0
         #prd_fact=1.0
