@@ -194,14 +194,9 @@ class QPNN:
             RBSGate(theta_i,wires=edge_seq_flat[edge_ctr],id=f"$\\alpha1_{{{{{qi}}}}}$")
             edge_ctr+=1
 
-        ctr=0
-        for ji,j in enumerate(range(max_q,max_q-shape[1],-1)):
-            for i in range(q_base-1-ji,q_base-1-ji+shape[0]):
-                if i<0:
-                    continue
-                RBSGate(weights[0][ctr],wires=edge_seq_flat[edge_ctr],id=f"$\\theta1_{{{{{ctr}}}}}$")
+        for ctr, wg in enumerate(weights[0]):
+                RBSGate(wg,wires=edge_seq_flat[edge_ctr],id=f"$\\theta1_{{{{{ctr}}}}}$")
                 edge_ctr+=1
-                ctr+=1
 
         return qml.probs(wires=range(max_q-shape[1],max_q))
     

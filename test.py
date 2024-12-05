@@ -21,7 +21,7 @@ def generate_sweep_config():
     parameters_dict = { 'epochs': {
                             'values': [300,400,500]},
                        'optimizer':{'values':["ADAM","ADAMW"]},
-                        'arch_elements':{'values':[8,9,10,11]}
+                        'arch_elements':{'values':[8,11]}
                         }
     sweep_config['parameters'] = parameters_dict
     parameters_dict.update({
