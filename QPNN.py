@@ -172,21 +172,20 @@ class QPNN:
         shape=np.shape(weights_aux)
         max_q=np.max(shape)
         
-        q_base=max_q-shape[0]
         #print("shape:", shape)
         #print("qbase: ",q_base)
         #print(weights)
         qml.PauliX(wires=q_base)
 
-        if self.connectivity=='full':
-            graph=[(i,j) for i in range(max_q-1) for j in range(i+1,max_q)]
-            probabilities={i:0.0 for i in range(max_q)}
-            nhot=len(self.hot_qubits)
-            for q_base in self.hot_qubits:
-                probabilities[q_base]=1.0/nhot
-            iterations=50
-            alpha=1e-4
-            _, edge_seq, _ = maximize_entropy_with_alpha(graph,probabilities,iterations,alpha)
+        graph=[(i,j) for i in range(max_q-1) for j in range(i+1,max_q)]
+        probabilities={i:0.0 for i in range(max_q)}
+        nhot=len(self.hot_qubits)
+        for qqi, q_base in enumerate(self.hot_qubits):
+            qml.PauliX(wires=q_base)
+            probabilities[q_base]=(1.0/nhot)+1e-6*(qqi-(nhot-1.)/2.)
+        iterations=50
+        alpha=1e-4
+        _, edge_seq, _ = maximize_entropy_with_alpha(graph,probabilities,iterations,alpha)
         npars=len(weights[0])
         edge_seq_flat=[tp for ls in edge_seq for tp in ls][:max_q-1+npars] # inputs + weights
 
