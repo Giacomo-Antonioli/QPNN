@@ -81,15 +81,6 @@ class QPNN:
         self.model=None
 
 
-        if self.connectivity=='full':
-            graph=[(i,j) for i in range(max_q-1) for j in range(i+1,max_q)]
-            probabilities={i:0.0 for i in range(max_q)}
-            nhot=len(self.hot_qubits)
-            for q_base in self.hot_qubits:
-                probabilities[q_base]=1.0/nhot
-            iterations=50
-            alpha=1e-4
-            _, self.edge_seq, _ = maximize_entropy_with_alpha(graph,probabilities,iterations,alpha)
         
         
     def init_model(self,mod_arch=None):
@@ -187,6 +178,15 @@ class QPNN:
         #print(weights)
         qml.PauliX(wires=q_base)
 
+        if self.connectivity=='full':
+            graph=[(i,j) for i in range(max_q-1) for j in range(i+1,max_q)]
+            probabilities={i:0.0 for i in range(max_q)}
+            nhot=len(self.hot_qubits)
+            for q_base in self.hot_qubits:
+                probabilities[q_base]=1.0/nhot
+            iterations=50
+            alpha=1e-4
+            _, edge_seq, _ = maximize_entropy_with_alpha(graph,probabilities,iterations,alpha)
         npars=len(weights[0])
         edge_seq_flat=[tp for ls in edge_seq for tp in ls][:max_q-1+npars] # inputs + weights
 
