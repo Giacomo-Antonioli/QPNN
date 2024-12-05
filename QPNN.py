@@ -17,6 +17,7 @@ from sklearn.model_selection import train_test_split
 
 from tqdm import tqdm
 
+from maxmixing import maximize_entropy_with_alpha
 
 s=0.05
 init_method=lambda x: torch.nn.init.uniform_(x,a=0.,b=s*np.pi)
@@ -56,11 +57,13 @@ class ProbsToUnaryLayer(torch.nn.Module):
         return input_var[:, filt]*12-6
         
 class QPNN:
-    def __init__(self,structure,X,y,xval=None,yval=None):
+    def __init__(self,structure,X,y,xval=None,yval=None,connectivity=None):
         self.X=X
         self.y=y
         self.xval=xval
         self.yval=yval
+        self.connectivity=connectivity if (connectivity is not None) else '1d'
+
         self.architecture=[np.shape(X)[1]]+structure+[int((np.shape(y)[1]))]
         self.nqubits=np.max(self.architecture)
         if torch.cuda.is_available():
@@ -81,7 +84,12 @@ class QPNN:
         #print("Initializing Model, using device: ",self.device)
        
         if mod_arch != None:
-            self.architecture=[self.architecture[0]]+[mod_arch]+[self.architecture[-1]]
+            if type(mod_arch) is list:
+                 self.architecture=[self.architecture[0]]+mod_arch+[self.architecture[-1]]
+            else:
+                self.architecture=[self.architecture[0]]+[mod_arch]+[self.architecture[-1]]
+
+
         for layer in range(len(self.architecture)-1):
             n_layers = 1
             n_pars = int((2*max(self.architecture[layer],self.architecture[layer+1])-1-min(self.architecture[layer],self.architecture[layer+1]))*(min(self.architecture[layer+1],self.architecture[layer]))/2)
@@ -120,11 +128,15 @@ class QPNN:
         #    if index%2==0:
         #        x.requires_grad =False    
     
-    
-        
-        
-        
     def probs_single(self,inputs, weights,weights_aux):
+        if self.connectivity=='1d':
+            return self.probs_single_1d(inputs,weights,weights_aux)
+        elif self.connectivity=='full':
+            return self.probs_single_full(inputs,weights,weights_aux)
+        else:
+            raise Exception("Invalid connectivity.")
+        
+    def probs_single_1d(self,inputs, weights,weights_aux):
         shape=np.shape(weights_aux)
         max_q=np.max(shape)
         
@@ -149,6 +161,46 @@ class QPNN:
                     continue
                 RBSGate(weights[0][ctr],[i,i+1],id=f"$\\theta1_{{{{{ctr}}}}}$")
                 
+                ctr+=1
+
+        return qml.probs(wires=range(max_q-shape[1],max_q))
+
+    def probs_single_full(self,inputs, weights,weights_aux):
+        shape=np.shape(weights_aux)
+        max_q=np.max(shape)
+        
+        q_base=max_q-shape[0]
+        #print("shape:", shape)
+        #print("qbase: ",q_base)
+        #print(weights)
+        qml.PauliX(wires=q_base)
+
+        graph=[(i,j) for i in range(max_q-1) for j in range(i+1,max_q)]
+        probabilities={i:0.0 for i in range(max_q)}
+        probabilities[q_base]=1.0
+        iterations=20
+        alpha=1e-4
+        _, edge_seq, _ = maximize_entropy_with_alpha(graph,probabilities,iterations,alpha)
+        npars=len(weights[0])
+        edge_seq_flat=[tp for ls in edge_seq for tp in ls][:max_q-1+npars]
+
+        edge_ctr=0
+        #prd_fact=1.0
+        for qi_idx, qi in enumerate(range(max_q-shape[0],max_q-1)):
+            #theta_i=2*torch.arccos((inputs[...,qi_idx])/prd_fact)
+            theta_i=2*torch.arccos(inputs[...,qi_idx])
+            #prd_fact=prd_fact*torch.sin(theta_i)
+            #print(theta_i)
+            RBSGate(theta_i,wires=edge_seq_flat[edge_ctr],id=f"$\\alpha1_{{{{{qi}}}}}$")
+            edge_ctr+=1
+
+        ctr=0
+        for ji,j in enumerate(range(max_q,max_q-shape[1],-1)):
+            for i in range(q_base-1-ji,q_base-1-ji+shape[0]):
+                if i<0:
+                    continue
+                RBSGate(weights[0][ctr],wires=edge_seq_flat[edge_ctr],id=f"$\\theta1_{{{{{ctr}}}}}$")
+                edge_ctr+=1
                 ctr+=1
 
         return qml.probs(wires=range(max_q-shape[1],max_q))

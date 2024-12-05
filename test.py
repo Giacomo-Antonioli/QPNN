@@ -11,6 +11,7 @@ dataset_list={"iris": 1,"digits": 2,"wine": 3,"cancer": 4, "iris_linear": 5, "mo
 
 target_dataset="pca_digits"
 gpu=False
+connectivity='full'
 
 def generate_sweep_config():
     wandb.login()
@@ -52,7 +53,7 @@ def generate_sweep_config():
 
 def main(gpu=False):
     x,xval,y,yval=get_dataset(dataset_list[target_dataset],split=True)
-    net=QPNN([5],x,y,xval,yval)#,
+    net=QPNN([5],x,y,xval,yval,connectivity=connectivity)#,
     if not gpu:
         net.device="cpu"
     net.train(wandb_verbose=True,verbose=True)
