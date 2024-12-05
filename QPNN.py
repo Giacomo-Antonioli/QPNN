@@ -175,7 +175,6 @@ class QPNN:
         #print("shape:", shape)
         #print("qbase: ",q_base)
         #print(weights)
-        qml.PauliX(wires=q_base)
 
         graph=[(i,j) for i in range(max_q-1) for j in range(i+1,max_q)]
         probabilities={i:0.0 for i in range(max_q)}
