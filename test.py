@@ -9,10 +9,13 @@ print(torch.cuda.is_available())
 #print(torch.cuda.current_device())
 dataset_list={"iris": 1,"digits": 2,"wine": 3,"cancer": 4, "iris_linear": 5, "moon": 6, "retinamnist": 7, "pca_digits":8}
 
+#import os
+#os.environ["OMP_NUM_THREADS"]="1"
+
 target_dataset="pca_digits"
 gpu=False
 connectivity='full'
-hot_qubits=[0,1] # unimplemented yet for "1d" (default) connectivity
+hot_qubits=[0,] # unimplemented yet for "1d" (default) connectivity
 
 def generate_sweep_config():
     wandb.login()

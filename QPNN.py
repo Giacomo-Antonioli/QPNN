@@ -17,7 +17,7 @@ from sklearn.model_selection import train_test_split
 
 from tqdm import tqdm
 
-from maxmixing import maximize_entropy_with_alpha
+from maxmixing import MWM_process
 
 s=0.05
 init_method=lambda x: torch.nn.init.uniform_(x,a=0.,b=s*np.pi)
@@ -52,6 +52,31 @@ class ProbsToUnaryLayer(torch.nn.Module):
     def forward(self, input_var):
         #print(input_var)
         filt = [2**i for i in range(self.size_q_in)]
+        #print(filt)
+        #print(input_var[:, filt])
+        return input_var[:, filt]*12-6
+
+def generate_bitstrings(n, k):
+    from itertools import combinations
+    bitstrings = []
+    for ones_positions in combinations(range(n), k):
+        bitstring = ['0'] * n
+        for pos in ones_positions:
+            bitstring[pos] = '1'
+        bitstrings.append(''.join(bitstring))
+    return bitstrings
+
+class ProbsToNnaryLayer(torch.nn.Module):
+
+    def __init__(self, size_in,hotness):
+        super(ProbsToNnaryLayer, self).__init__()
+        self.size_q_in=size_in
+        self.hotness=hotness
+        self.bitstrings = generate_bitstrings(size_in, hotness)
+
+    def forward(self, input_var):
+        #print(input_var)
+        filt = [np.sum([2**i for i,b in enumerate(bs) if b=='1']) for bs in self.bitstrings]
         #print(filt)
         #print(input_var[:, filt])
         return input_var[:, filt]*12-6
@@ -110,7 +135,11 @@ class QPNN:
             self.qnodes.append(qnode)
             self.qlayers.append(qlayer)
             self.model_architecture.append(qlayer)
-            self.model_architecture.append(ProbsToUnaryLayer(self.architecture[layer+1]))
+            #self.model_architecture.append(ProbsToUnaryLayer(self.architecture[layer+1]))
+            if len(self.hot_qubits)==1:
+                self.model_architecture.append(ProbsToUnaryLayer(self.architecture[layer+1]))
+            else:
+                self.model_architecture.append(ProbsToNnaryLayer(self.architecture[layer+1],len(self.hot_qubits)))
             print("adding qlayer")
             print("adding Prob to unitary")
 
@@ -183,8 +212,12 @@ class QPNN:
             qml.PauliX(wires=q_base)
             probabilities[q_base]=(1.0/nhot)+1e-6*(qqi-(nhot-1.)/2.)
         iterations=50
-        alpha=1e-4
-        _, edge_seq, _ = maximize_entropy_with_alpha(graph,probabilities,iterations,alpha)
+        alpha=0.4
+        beta=0.05
+        gamma=0.001
+        vert_decay=0.95
+        link_decay=0.95
+        _, edge_seq, _ = MWM_process(graph,probabilities,iterations,alpha,beta,gamma,vert_decay,link_decay)
         npars=len(weights[0])
         edge_seq_flat=[tp for ls in edge_seq for tp in ls][:max_q-1+npars] # inputs + weights
 
