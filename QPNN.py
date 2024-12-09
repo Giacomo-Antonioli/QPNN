@@ -79,18 +79,24 @@ class ProbsToNnaryLayer(torch.nn.Module):
         filt = [np.sum([2**i for i,b in enumerate(bs) if b=='1']) for bs in self.bitstrings]
         #print(filt)
         #print(input_var[:, filt])
-        return input_var[:, filt]*12-6
+        return input_var[:, filt] #*2-1.
         
 class QPNN:
-    def __init__(self,structure,X,y,xval=None,yval=None,connectivity=None,hot_qubits=None):
+    def __init__(self,structure,X,y,xval=None,yval=None,connectivity=None,hot_qubits=None,num_params=None,boundary_arch=None):
         self.X=X
         self.y=y
         self.xval=xval
         self.yval=yval
         self.connectivity=connectivity if (connectivity is not None) else '1d'
         self.hot_qubits=hot_qubits if (hot_qubits is not None) else [0,]
+        self.num_params=num_params
+        self.edge_seq_flat_lists={}
 
-        self.architecture=[np.shape(X)[1]]+structure+[int((np.shape(y)[1]))]
+        if boundary_arch is None:
+            self.architecture=[np.shape(X)[1]]+structure+[int((np.shape(y)[1]))]
+        else:
+            self.architecture=[boundary_arch[0]]+structure+[boundary_arch[1]]
+
         self.nqubits=np.max(self.architecture)
         if torch.cuda.is_available():
             self.device="cuda"
@@ -120,12 +126,15 @@ class QPNN:
 
         for layer in range(len(self.architecture)-1):
             n_layers = 1
-            n_pars = int((2*max(self.architecture[layer],self.architecture[layer+1])-1-min(self.architecture[layer],self.architecture[layer+1]))*(min(self.architecture[layer+1],self.architecture[layer]))/2)
+            if self.num_params is None:
+                n_pars = int((2*max(self.architecture[layer],self.architecture[layer+1])-1-min(self.architecture[layer],self.architecture[layer+1]))*(min(self.architecture[layer+1],self.architecture[layer]))/2)
+            else:
+                n_pars=self.num_params
+
             if self.device == "cuda":
                 dev = qml.device("lightning.gpu", wires=max(self.architecture[layer],self.architecture[layer+1])) #TODO: ADD CUDA
 
             else:
-
                 dev = qml.device("default.qubit", wires=max(self.architecture[layer],self.architecture[layer+1])) #TODO: ADD CUDA
             qnode = qml.QNode(self.probs_single, dev)
             weight_shapes = {"weights": (n_layers, n_pars),"weights_aux":(self.architecture[layer],self.architecture[layer+1])}
@@ -201,26 +210,34 @@ class QPNN:
         shape=np.shape(weights_aux)
         max_q=np.max(shape)
         
+        for qqi, q_base in enumerate(self.hot_qubits):
+            qml.PauliX(wires=q_base)
         #print("shape:", shape)
         #print("qbase: ",q_base)
         #print(weights)
 
-        graph=[(i,j) for i in range(max_q-1) for j in range(i+1,max_q)]
-        probabilities={i:0.0 for i in range(max_q)}
-        nhot=len(self.hot_qubits)
-        for qqi, q_base in enumerate(self.hot_qubits):
-            qml.PauliX(wires=q_base)
-            probabilities[q_base]=(1.0/nhot)+1e-6*(qqi-(nhot-1.)/2.)
-        iterations=50
-        alpha=0.4
-        beta=0.05
-        gamma=0.001
-        vert_decay=0.95
-        link_decay=0.95
-        _, edge_seq, _ = MWM_process(graph,probabilities,iterations,alpha,beta,gamma,vert_decay,link_decay)
-        npars=len(weights[0])
-        edge_seq_flat=[tp for ls in edge_seq for tp in ls][:max_q-1+npars] # inputs + weights
+        if (tuple(shape),max_q) in self.edge_seq_flat_lists.keys():
+            edge_seq_flat=self.edge_seq_flat_lists[(tuple(shape),max_q)].copy()
+        else:
+            print("build MWM process for ",tuple(shape),max_q)
+            graph=[(i,j) for i in range(max_q-1) for j in range(i+1,max_q)]
+            probabilities={i:0.0 for i in range(max_q)}
+            nhot=len(self.hot_qubits)
+            for qqi, q_base in enumerate(self.hot_qubits):
+                probabilities[q_base]=(1.0/nhot)+1e-6*(qqi-(nhot-1.)/2.)
+            iterations=100
+            alpha=0.4
+            beta=0.05
+            gamma=0.001
+            vert_decay=0.95
+            link_decay=0.95
+            _, edge_seq, _ = MWM_process(graph,probabilities,iterations,alpha,beta,gamma,vert_decay,link_decay)
+            npars=len(weights[0])
+            edge_seq_flat=[tp for ls in edge_seq for tp in ls][:max_q-1+npars] # inputs + weights
+            self.edge_seq_flat_lists[(tuple(shape),max_q)]=edge_seq_flat.copy()
+            print("edge sequence:\n",edge_seq)
 
+        #print(edge_seq_flat)
         edge_ctr=0
         #prd_fact=1.0
         for qi_idx, qi in enumerate(range(max_q-shape[0],max_q-1)):
@@ -308,7 +325,11 @@ class QPNN:
                     ys.to("cpu")
                 else:
                     res=self.model(xs)
-                #print(res)   
+                if res.shape[1]-ys.shape[1]>0:
+                    zeros = torch.zeros(ys.shape[0], res.shape[1]-ys.shape[1])
+                    ys=torch.cat((ys,zeros),res.shape[1]-ys.shape[1])
+                    #print(res.shape)
+                    #print(ys.shape)
                 loss_evaluated = loss(res, ys)
                 #print(loss_evaluated)
                 #print(res)
@@ -329,7 +350,15 @@ class QPNN:
                 y_pred_val = self.model(Xval)
                 if self.device=="cuda":
                     y_pred_val.to("cpu")
+
                 predictions_val = torch.argmax(y_pred_val, axis=1).detach().numpy()
+
+                if y_pred_val.shape[1]-yval.shape[1]>0:
+                    zeros = torch.zeros(yval.shape[0], y_pred_val.shape[1]-yval.shape[1])
+                    yval=torch.cat((yval,zeros),y_pred_val.shape[1]-yval.shape[1])
+#                    print(y_pred_val.shape)
+#                    print(yval.shape)
+
                 loss_evaluated_val = loss(y_pred_val, yval)
                 y_val_pos=torch.argmax(yval, axis=1).detach().numpy()
 
