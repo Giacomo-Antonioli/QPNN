@@ -78,8 +78,8 @@ class ProbsToNnaryLayer(torch.nn.Module):
         #print(input_var)
         filt = [np.sum([2**i for i,b in enumerate(bs) if b=='1']) for bs in self.bitstrings]
         #print(filt)
-        #print(input_var[:, filt])
-        return input_var[:, filt] #*2-1.
+        #print([(i,f"{i:05b}",float(input_var[0, i])) for i in filt])
+        return input_var[:, filt]*4.
         
 class QPNN:
     def __init__(self,structure,X,y,xval=None,yval=None,connectivity=None,hot_qubits=None,num_params=None,boundary_arch=None):
@@ -210,8 +210,6 @@ class QPNN:
         shape=np.shape(weights_aux)
         max_q=np.max(shape)
         
-        for qqi, q_base in enumerate(self.hot_qubits):
-            qml.PauliX(wires=q_base)
         #print("shape:", shape)
         #print("qbase: ",q_base)
         #print(weights)
@@ -233,20 +231,40 @@ class QPNN:
             link_decay=0.95
             _, edge_seq, _ = MWM_process(graph,probabilities,iterations,alpha,beta,gamma,vert_decay,link_decay)
             npars=len(weights[0])
-            edge_seq_flat=[tp for ls in edge_seq for tp in ls][:max_q-1+npars] # inputs + weights
+            if len(self.hot_qubits)>1:
+                edge_seq_flat=[tp for ls in edge_seq for tp in ls][:max_q-1+npars] # inputs + weights
+            else:
+                edge_seq_flat=[tp for ls in edge_seq for tp in ls][:npars] # inputs + weights
             self.edge_seq_flat_lists[(tuple(shape),max_q)]=edge_seq_flat.copy()
             print("edge sequence:\n",edge_seq)
 
         #print(edge_seq_flat)
         edge_ctr=0
-        #prd_fact=1.0
-        for qi_idx, qi in enumerate(range(max_q-shape[0],max_q-1)):
-            #theta_i=2*torch.arccos((inputs[...,qi_idx])/prd_fact)
-            theta_i=2*torch.arccos(inputs[...,qi_idx])
-            #prd_fact=prd_fact*torch.sin(theta_i)
-            #print(theta_i)
-            RBSGate(theta_i,wires=edge_seq_flat[edge_ctr],id=f"$\\alpha1_{{{{{qi}}}}}$")
-            edge_ctr+=1
+        if len(self.hot_qubits)>1:
+            for qqi, q_base in enumerate(self.hot_qubits):
+                qml.PauliX(wires=q_base)
+            #prd_fact=1.0
+            for qi_idx, qi in enumerate(range(max_q-shape[0],max_q-1)):
+                #theta_i=2*torch.arccos((inputs[...,qi_idx])/prd_fact)
+                theta_i=2*torch.arccos(inputs[...,qi_idx])
+                #prd_fact=prd_fact*torch.sin(theta_i)
+                #print(theta_i)
+                RBSGate(theta_i,wires=edge_seq_flat[edge_ctr],id=f"$\\alpha1_{{{{{qi}}}}}$")
+                edge_ctr+=1
+        else:
+
+            q_base=max_q-shape[0]
+            #print("shape:", shape)
+            #print("qbase: ",q_base)
+            #print(weights)
+            qml.PauliX(wires=q_base)
+            prd_fact=1.0
+            for qi_idx, qi in enumerate(range(max_q-shape[0],max_q-1)):
+
+                theta_i=2*torch.arccos((inputs[...,qi_idx])/prd_fact)
+                #prd_fact=prd_fact*torch.sin(theta_i)
+                #print(theta_i)
+                RBSGate(theta_i,wires=[qi,qi+1],id=f"$\\alpha1_{{{{{qi}}}}}$")
 
         for ctr, wg in enumerate(weights[0]):
                 RBSGate(wg,wires=edge_seq_flat[edge_ctr],id=f"$\\theta1_{{{{{ctr}}}}}$")

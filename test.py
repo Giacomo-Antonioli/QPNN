@@ -15,9 +15,10 @@ dataset_list={"iris": 1,"digits": 2,"wine": 3,"cancer": 4, "iris_linear": 5, "mo
 target_dataset="pca_digits"
 gpu=False
 connectivity='full'
-hot_qubits=[0,1] # unimplemented yet for "1d" (default) connectivity
+hot_qubits=[0,] # unimplemented yet for "1d" (default) connectivity
 num_params=80
-boundary_arch=[5,5]
+#boundary_arch=[5,5]
+boundary_arch=[9,9]
 
 def generate_sweep_config():
     wandb.login()
