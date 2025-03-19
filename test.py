@@ -9,7 +9,7 @@ print(torch.cuda.is_available())
 #print(torch.cuda.current_device())
 dataset_list={"iris": 1,"digits": 2,"wine": 3,"cancer": 4, "iris_linear": 5, "moon": 6, "retinamnist": 7, "pca_digits":8,"nist_pca":9}
 
-target_dataset="moon"
+target_dataset="iris"
 gpu=False
 
 def generate_sweep_config():
@@ -20,7 +20,7 @@ def generate_sweep_config():
     parameters_dict = { 'epochs': {
                             'values': [300]},
                        'optimizer':{'values':["ADAM","ADAMW"]},
-                        'arch_elements':{'values':[[3,3,3]]}
+                        'arch_elements':{'values':[[3]]}
                         }
     sweep_config['parameters'] = parameters_dict
     parameters_dict.update({

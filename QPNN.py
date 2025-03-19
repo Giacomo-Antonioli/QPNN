@@ -20,6 +20,21 @@ from tqdm import tqdm
 
 s=0.05
 init_method=lambda x: torch.nn.init.uniform_(x,a=0.,b=s*np.pi)
+class NonLinearPostsel(torch.nn.Module):
+
+    def __init__(self, size_out,alpha=1.0,shift=0.0):
+        super(NonLinearPostsel, self).__init__()
+        self.size_out=size_out
+        self.alpha=alpha
+        self.shift=shift
+
+    def forward(self, input_var):
+        #print(input_var.shape)
+        #print(torch.sum(input_var[...,self.size_out:],1).shape)
+        return self.alpha*torch.log(input_var[...,:self.size_out]+1e-8+self.shift) #/(1.0-torch.sum(input_var[...,self.size_out:],1))
+
+
+# usage:
 
 class RBSGate(Operation):
     num_wires = 2  
@@ -53,7 +68,7 @@ class ProbsToUnaryLayer(torch.nn.Module):
         filt = [2**i for i in range(self.size_q_in)]
         #print(filt)
         #print(input_var[:, filt])
-        return input_var[:, filt]*12-6#*3-1.5
+        return input_var[:, filt]#*12-6#*3-1.5
         
 class QPNN:
     def __init__(self,structure,X,y,xval=None,yval=None):
@@ -105,7 +120,8 @@ class QPNN:
             self.qnodes.append(qnode)
             self.qlayers.append(qlayer)
             if layer==0:
-                self.model_architecture.append(torch.nn.Softmax())#per rinormalizzare
+                self.model_architecture.append(NonLinearPostsel(self.architecture[layer],2.0,15.0))#per rinormalizzare
+                self.model_architecture.append(torch.nn.Softmax(dim=-1))
             self.model_architecture.append(qlayer)
             self.model_architecture.append(ProbsToUnaryLayer(self.architecture[layer+1]))
             print("adding qlayer")
@@ -113,7 +129,9 @@ class QPNN:
             print("adding Sigmoid")
             
             #self.model_architecture.append(torch.nn.Tanh())
-            self.model_architecture.append(torch.nn.Softmax())#per rinormalizzare
+            self.model_architecture.append(NonLinearPostsel(self.architecture[layer+1],2.0))#per rinormalizzare
+            self.model_architecture.append(torch.nn.Softmax(dim=-1))
+
  
         self.model= torch.nn.Sequential(*self.model_architecture)
         print("Architecture: ",self.architecture)
@@ -134,8 +152,11 @@ class QPNN:
         for qi_idx, qi in enumerate(range(max_q-shape[0],max_q-1)):
             
             #print(inputs[...,qi_idx])
+            if np.any(inputs.detach().numpy()<0):
+                print(inputs)
+
             theta_i=2*torch.arccos(torch.sqrt(inputs[...,qi_idx])/prd_fact)
-            prd_fact=prd_fact*torch.sin(theta_i/2)
+            prd_fact=prd_fact*torch.sin(theta_i/2)+1e-8
             #print(theta_i)
             #RBSGate(theta_i,wires=[qi,qi+1],id=f"$\\alpha1_{{{{{qi}}}}}$")
             qml.Hadamard(wires=qi),
@@ -251,6 +272,8 @@ class QPNN:
                 loss_evaluated = loss(res, ys)
                 #print("LOSS")
                 #print(loss_evaluated)
+               # if np.isnan(loss_evaluated.detach().numpy()):
+                #    input()
                 loss_evaluated.backward()
         
                 opt.step()
