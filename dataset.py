@@ -18,10 +18,10 @@ import wandb
 from sklearn.model_selection import train_test_split
 
 from tqdm import tqdm
+from data_loader import *
 
 
-
-dataset_list={"iris": 1,"digits": 2,"wine": 3,"cancer": 4, "iris_linear": 5, "moon": 6, "retinamnist": 7,"pca_digits":8}
+dataset_list={"iris": 1,"digits": 2,"wine": 3,"cancer": 4, "iris_linear": 5, "moon": 6, "retinamnist": 7,"pca_digits":8,"nist_pca":9}
 
 
 
@@ -131,25 +131,50 @@ def get_dataset(index, pca=8, split=True, split_percentage=0.33, standardization
             X = pca_2.transform(elements)
             y=targets
             n_classes=len(np.unique(targets))
+        case 9:
+            '''
+            classes=[1,2,3,4,5,6,7,8,9],
+           train_size=1000,
+           test_size=100,
+           balanced_training=True,
+           balanced_testing=True,
+           dim_reduction_technique='PCA','''
+            tr_x, tr_y, _, _, _, _ = load_data(dataset='MNIST',
+                                       balanced=True,
+                                       classes=[1,2,3,4,5,6,7,8,9],
+                                       samples=[1000, 0, 0],
+                                       dim_scale=9,
+                                       dim_red_method='PCA')
+        
+            _, _, te_x, te_y, _, _ = load_data(dataset='MNIST',
+                                       balanced=True,
+                                       classes=[1,2,3,4,5,6,7,8,9],
+                                       samples=[0, 100, 0],
+                                       dim_scale=9,
+                                       dim_red_method='PCA')
+            tr_x = [x/np.linalg.norm(x) for x in tr_x[:]]
+            te_x[:] = [x/np.linalg.norm(x) for x in te_x[:]]
         case _:
             raise Exception("Sorry, the dataset does not exist")
 
+    if index != 9:
+        match standardization_mode:
+            case 1:
+                X_mean, X_std=np.mean(X,axis=0), np.std(X,axis=0,ddof=1)
+                
+                X=(X-X_mean)/X_std
+                X=np.hstack((X,2.0*np.ones(X.shape[0])[:,None]))
+                X=np.array([np.clip(row/np.sqrt(np.sum(row**2)),-1,1) for row in X])
+            case 2:
+                X=stereo_pj(X)
 
-    match standardization_mode:
-        case 1:
-            X_mean, X_std=np.mean(X,axis=0), np.std(X,axis=0,ddof=1)
-            
-            X=(X-X_mean)/X_std
-            X=np.hstack((X,2.0*np.ones(X.shape[0])[:,None]))
-            X=np.array([np.clip(row/np.sqrt(np.sum(row**2)),-1,1) for row in X])
-        case 2:
-            X=stereo_pj(X)
+        y_hot=torch.zeros((len(y),n_classes),requires_grad=False)
+        for index,element in enumerate(y):
+            y_hot[index][element]=1
 
-    y_hot=torch.zeros((len(y),n_classes),requires_grad=False)
-    for index,element in enumerate(y):
-        y_hot[index][element]=1
-
-    if split:
-        return train_test_split(X, y_hot, test_size=split_percentage, random_state=42)
+        if split:
+            return train_test_split(X, y_hot, test_size=split_percentage, random_state=42)
+        else:
+            return X, y_hot
     else:
-        return X, y_hot
+        return tr_x, te_x, tr_y, te_y,

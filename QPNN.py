@@ -53,7 +53,7 @@ class ProbsToUnaryLayer(torch.nn.Module):
         filt = [2**i for i in range(self.size_q_in)]
         #print(filt)
         #print(input_var[:, filt])
-        return input_var[:, filt]*12-6
+        return input_var[:, filt]*12-6#*3-1.5
         
 class QPNN:
     def __init__(self,structure,X,y,xval=None,yval=None):
@@ -97,19 +97,23 @@ class QPNN:
                 dev = qml.device("default.qubit", wires=max(self.architecture[layer],self.architecture[layer+1]))  
             
             qnode = qml.QNode(self.probs_single, dev)
+            #qml.partial(qml.transforms.insert, op=qml.DepolarizingChannel, op_args=0.2, position="all")
             weight_shapes = {"weights": (n_layers, n_pars),"weights_aux":(self.architecture[layer],self.architecture[layer+1])}
 
             qlayer = qml.qnn.TorchLayer(qnode, weight_shapes,init_method=init_method)
             self.devs.append(dev)
             self.qnodes.append(qnode)
             self.qlayers.append(qlayer)
+            if layer==0:
+                self.model_architecture.append(torch.nn.Softmax())#per rinormalizzare
             self.model_architecture.append(qlayer)
             self.model_architecture.append(ProbsToUnaryLayer(self.architecture[layer+1]))
             print("adding qlayer")
             print("adding Prob to unitary")
             print("adding Sigmoid")
             
-            self.model_architecture.append(torch.nn.Sigmoid())
+            #self.model_architecture.append(torch.nn.Tanh())
+            self.model_architecture.append(torch.nn.Softmax())#per rinormalizzare
  
         self.model= torch.nn.Sequential(*self.model_architecture)
         print("Architecture: ",self.architecture)
@@ -126,29 +130,47 @@ class QPNN:
         q_base=max_q-shape[0]
         qml.PauliX(wires=q_base)
         prd_fact=1.0
-
+        #print("HERE")
         for qi_idx, qi in enumerate(range(max_q-shape[0],max_q-1)):
-
-            theta_i=2*torch.arccos((inputs[...,qi_idx])/prd_fact)
-            #prd_fact=prd_fact*torch.sin(theta_i)
+            
+            #print(inputs[...,qi_idx])
+            theta_i=2*torch.arccos(torch.sqrt(inputs[...,qi_idx])/prd_fact)
+            prd_fact=prd_fact*torch.sin(theta_i/2)
             #print(theta_i)
-            RBSGate(theta_i,wires=[qi,qi+1],id=f"$\\alpha1_{{{{{qi}}}}}$")
-
+            #RBSGate(theta_i,wires=[qi,qi+1],id=f"$\\alpha1_{{{{{qi}}}}}$")
+            qml.Hadamard(wires=qi),
+            qml.Hadamard(wires=qi+1),
+            qml.CZ(wires=[qi,qi+1]),
+            qml.RY(theta_i/2.,wires=qi),
+            qml.RY(-theta_i/2.,wires=qi+1),
+            qml.CZ(wires=[qi,qi+1]),
+            qml.Hadamard(wires=qi),
+            qml.Hadamard(wires=qi+1)
         ctr=0
 
         for ji,j in enumerate(range(max_q,max_q-shape[1],-1)):
             for i in range(q_base-1-ji,q_base-1-ji+shape[0]):
                 if i<0:
                     continue
-                RBSGate(weights[0][ctr],[i,i+1],id=f"$\\theta1_{{{{{ctr}}}}}$")
-                
+                #RBSGate(weights[0][ctr],[i,i+1],id=f"$\\theta1_{{{{{ctr}}}}}$")
+                qml.Hadamard(wires=i),
+                qml.Hadamard(wires=i+1),
+                qml.CZ(wires=[i,i+1]),
+                qml.RY(weights[0][ctr],wires=i),
+                qml.RY(-weights[0][ctr],wires=i+1),
+                qml.CZ(wires=[i,i+1]),
+                qml.Hadamard(wires=i),
+                qml.Hadamard(wires=i+1)
                 ctr+=1
-
-        return qml.probs(wires=range(max_q-shape[1],max_q))
-    
+        #print("HERE 2")
+        res =qml.probs(wires=range(max_q-shape[1],max_q))
+        #print("HERE 2.5")
+        
+        return  res
 
 
     def predict(self, X):
+        #print("HERE3")
         X = torch.tensor(X, requires_grad=False).float()
         return torch.argmax(self.model(X), dim=1).detach().numpy()
     
@@ -177,6 +199,7 @@ class QPNN:
         loss = torch.nn.CrossEntropyLoss() 
         
         X = torch.tensor(self.X, requires_grad=False).float()
+
         y = torch.tensor(self.y, requires_grad=False).float()
 
         if self.xval is not None:
@@ -210,25 +233,30 @@ class QPNN:
             running_loss = 0
             
             for xs, ys in data_loader:
- 
+      
                 if self.device=="cuda":
                     xs.to("cuda")
                     ys.to("cuda")
-                    
+                #print("LOOOK")
+                #print(xs)    
                 opt.zero_grad()
                 if self.device=="cuda":
                     res=self.model(xs).to("cpu")
                     ys.to("cpu")
                 else:
+                    #print("HEREs")
                     res=self.model(xs)
-  
+                    #print("res")
+                    #print(res)
                 loss_evaluated = loss(res, ys)
- 
+                #print("LOSS")
+                #print(loss_evaluated)
                 loss_evaluated.backward()
         
                 opt.step()
         
                 running_loss += loss_evaluated
+                #input()
         
             avg_loss = running_loss# /batch_size# / 1 if batches==0 else batches
            # if verbose: 
